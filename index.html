@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>THE Scheduler Choice App</title>
         <!-- Bootstrap CSS -->
@@ -25,32 +25,33 @@
             <br>
             <h2>Create a choice:</h2>
             <br>
-            <label for="choicename">Choice Name </label> <input id="choicename">
+            <label for="choicename">Choice Name </label> <input id="choicename" class="choiceField">
             <br>
             <label for="choicedescription">Choice Description </label>
-            <textarea id="choicedescription"></textarea>
+            <textarea id="choicedescription" class="choiceField"></textarea>
             <h3>Alternatives (need at least 2):</h3>
             <div class="row">
                 <div class="col-sm-6">
-                    <label for="alt1name">Alt 1 Name </label> <input id="alt1name"><br>
-                    <label for="alt2name">Alt 2 Name </label> <input id="alt2name"><br>
-                    <label for="alt3name">Alt 3 Name </label> <input id="alt3name"><br>
-                    <label for="alt4name">Alt 4 Name </label> <input id="alt4name"><br>
-                    <label for="alt5name">Alt 5 Name </label> <input id="alt5name"><br>
+                    <label for="alt1name">Alt 1 Name </label> <input id="alt1name" class="choiceField altname"><br>
+                    <label for="alt2name">Alt 2 Name </label> <input id="alt2name" class="choiceField altname"><br>
+                    <label for="alt3name">Alt 3 Name </label> <input id="alt3name" class="choiceField altname"><br>
+                    <label for="alt4name">Alt 4 Name </label> <input id="alt4name" class="choiceField altname"><br>
+                    <label for="alt5name">Alt 5 Name </label> <input id="alt5name" class="choiceField altname"><br>
                 </div>
                 <div class="col-sm-6">
-                    <label for="alt1description">Alt 1 Description </label> <input id="alt1description"><br>
-                    <label for="alt2description">Alt 2 Description </label> <input id="alt2description"><br>
-                    <label for="alt3description">Alt 3 Description </label> <input id="alt3description"><br>
-                    <label for="alt4description">Alt 4 Description </label> <input id="alt4description"><br>
-                    <label for="alt5description">Alt 5 Description </label> <input id="alt5description"><br>
+                    <label for="alt1description">Alt 1 Description </label> <input id="alt1description" class="choiceField altdescription"><br>
+                    <label for="alt2description">Alt 2 Description </label> <input id="alt2description" class="choiceField altdescription"><br>
+                    <label for="alt3description">Alt 3 Description </label> <input id="alt3description" class="choiceField altdescription"><br>
+                    <label for="alt4description">Alt 4 Description </label> <input id="alt4description" class="choiceField altdescription"><br>
+                    <label for="alt5description">Alt 5 Description </label> <input id="alt5description" class="choiceField altdescription"><br>
                 </div>
             </div>
             <br>
-            <input type="submit" value="Create Choice">
+            <input type="submit" value="Create Choice" id="createChoice">
             <br>
             <br>
             <br>
         </div>
+        <script src="script.js"></script>
     </body>
 </html>
