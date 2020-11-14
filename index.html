@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>THE Scheduler Choice App</title>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div style="float:right">
+                <input type="submit" value="secret admin login">
+            </div>
+            <div class="jumbotron">
+                <h1>Welcome to THE Scheduler Choice App</h1>
+            </div>
+            <br>
+            <h2>Enter in a choice code:</h2>
+            <input type="text">
+            <button>Enter</button>
+            <br>
+            <hr>
+            <br>
+            <h2>Create a choice:</h2>
+            <br>
+            <label for="choicename">Choice Name </label> <input id="choicename">
+            <br>
+            <label for="choicedescription">Choice Description </label>
+            <textarea id="choicedescription"></textarea>
+            <h3>Alternatives (need at least 2):</h3>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="alt1name">Alt 1 Name </label> <input id="alt1name"><br>
+                    <label for="alt2name">Alt 2 Name </label> <input id="alt2name"><br>
+                    <label for="alt3name">Alt 3 Name </label> <input id="alt3name"><br>
+                    <label for="alt4name">Alt 4 Name </label> <input id="alt4name"><br>
+                    <label for="alt5name">Alt 5 Name </label> <input id="alt5name"><br>
+                </div>
+                <div class="col-sm-6">
+                    <label for="alt1description">Alt 1 Description </label> <input id="alt1description"><br>
+                    <label for="alt2description">Alt 2 Description </label> <input id="alt2description"><br>
+                    <label for="alt3description">Alt 3 Description </label> <input id="alt3description"><br>
+                    <label for="alt4description">Alt 4 Description </label> <input id="alt4description"><br>
+                    <label for="alt5description">Alt 5 Description </label> <input id="alt5description"><br>
+                </div>
+            </div>
+            <br>
+            <input type="submit" value="Create Choice">
+            <br>
+            <br>
+            <br>
+        </div>
+    </body>
+</html>
