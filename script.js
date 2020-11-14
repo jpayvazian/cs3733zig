@@ -1,16 +1,11 @@
 const checkIfUserEnteredEverything = function() {
-    if(Array.prototype.slice.call(document.querySelectorAll(".choiceField")).filter(i=>i.value!="").length<6) {
-        document.querySelector('#createChoice').disabled = true;
-    } else {
-        const arr = [0,0,0,0,0];
-        let i = 0;
-        let count = 0;
-        Array.prototype.slice.call(document.querySelectorAll(".altname")).map(x=>arr[i++]=x.value!="");
-        i=0;
-        Array.prototype.slice.call(document.querySelectorAll(".altdescription")).forEach(x=>count+=(arr[i++]&&x.value!="")?1:0);
-        document.querySelector('#createChoice').disabled = count < 2;
-        console.log(count);
+    const names = document.querySelectorAll(".altname")
+    const descriptions = document.querySelectorAll(".altdescription")
+    let count = 0;
+    for(let i=0; i<5; i++) {
+        count += (names[i].value!=""&&descriptions[i].value!="")?1:0
     }
+    document.querySelector('#createChoice').disabled = count < 2 || document.querySelector('#choicedescription').value=='' || document.querySelector('#numMembers').value<1
 }
 
 window.onload = function() {
