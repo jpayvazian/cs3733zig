@@ -1,3 +1,10 @@
+/*
+THIS CODE IS ONLY SO I CAN EASILY TEST THE HTML/JS.
+THIS CODE WILL NOT BE IN THE FINAL REPOSITORY
+
+If you wish to test this yourself, install node.js and then run
+"node server.js" while in your cloned repository.
+*/
 const http = require('http'),
       fs   = require('fs'),
       port = 3000
@@ -5,13 +12,13 @@ const http = require('http'),
 const server = http.createServer( function( request,response ) {
   switch( request.url ) {
     case '/':
-      sendFile( response, 'index.html' )
+      sendFile( response, 'html/index.html' )
       break
     case '/index.html':
-      sendFile( response, 'index.html' )
+      sendFile( response, 'html/index.html' )
       break
     default:
-      sendFile( response, 'script.js' )
+      sendFile( response, 'js/script.js' )
   }
 })
 

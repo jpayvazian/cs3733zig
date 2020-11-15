@@ -14,4 +14,7 @@ window.onload = function() {
     }
     document.querySelector('#createChoice').disabled = true;
     Array.prototype.slice.call(document.querySelectorAll(".choiceField")).map(i=>i.onblur=checkIfUserEnteredEverything);
+    document.querySelector('#choicesearch').onclick = function(e) {
+        
+    }
 }
