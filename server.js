@@ -20,8 +20,11 @@ const server = http.createServer( function( request,response ) {
     case '/admin.html':
       sendFile(response, 'html/admin.html')
       break
-    default:
+    case '/script.js':
       sendFile( response, 'js/script.js' )
+      break
+    default:
+      sendFile( response, 'html/choice.html' )
   }
 })
 

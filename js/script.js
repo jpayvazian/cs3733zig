@@ -30,6 +30,7 @@ window.onload = () => {
     })
     document.querySelector('#registerchoice').onclick = function(e) {
         e.preventDefault()
+        //window.location.href = 'choice.html?c='+document.querySelector('#choicecode').value
         const inputs = document.querySelectorAll('.registerFields')
         //NOTE: this should serve as both a log in and a sign up
         //basically, if user does not exist, we create one
