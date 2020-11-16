@@ -1,0 +1,53 @@
+paths:
+  /choices:
+    get:
+      operationId: "requestChoices"
+      produces:
+      - "application/json"
+      response:
+        200:
+          description: "200 response"
+          schema:
+            $ref: "#/definitions/ListOfChoices"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+        400:
+          description: "400 response"
+    post:
+      operationId: "deleteChoices"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "days"
+        required: true
+        type: integer
+      response:
+        200:
+          descrption: "200 response"
+          headers:
+            Access-Control-Allow-Origin:
+              type: "string"
+        400:
+          description: "400 response"
+definitions:
+  Choice:
+    type: "object"
+    required:
+    - "description"
+    - "listOfAlternatives"
+    - "listOfTeamMembers"
+    properties:
+      description:
+        type: "string"
+      listOfAlternatives:
+        type: "object" #should be schema
+      listOfTeamMembers:
+        type: "object" #should be schema
+  ListOfChoices:
+    type: "array"
+    items:
+      $ref: "#/definitions/Choice"
