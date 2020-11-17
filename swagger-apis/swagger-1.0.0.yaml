@@ -1,53 +1,434 @@
+swagger: '2.0'
+info:
+  description: CS3733 Zig Choice Scheduler API
+  version: 1.0.0
+  title: CS3733 Zig API
+  # Team developer contact info 
+  contact: 
+    email: jpayvazian@wpi.edu
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: members
+  description: Operations available to team members
+
 paths:
-  /choices:
+  /choice:
     get:
-      operationId: "requestChoices"
+      tags:
+      - admins
+      operationId: requestChoices
       produces:
-      - "application/json"
-      response:
+      - application/json
+      responses:
         200:
-          description: "200 response"
+          description: "200 response: Choice report accessed"
           schema:
             $ref: "#/definitions/ListOfChoices"
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
         400:
-          description: "400 response"
+          description: "400 response: Invalid input"
     post:
-      operationId: "deleteChoices"
+      tags:
+      - members
+      operationId: createChoice
+      description: Requests to creates a choice
       consumes:
-      - "application/json"
+      - application/json
       produces:
-      - "application/json"
+      - application/json
       parameters:
-      - in: "body"
-        name: "days"
+      - in: body
+        name: ChoiceRequest
         required: true
-        type: integer
-      response:
+        schema:
+          $ref: '#/definitions/ChoiceRequest'
+      responses:
         200:
-          descrption: "200 response"
-          headers:
-            Access-Control-Allow-Origin:
-              type: "string"
+          description: "200 response: Choice created"
+          schema:
+            $ref: '#/definitions/Choice'
         400:
-          description: "400 response"
+          description: "400 response: Invalid input"
+  /alternative:
+    get:
+      tags:
+      - members
+      operationId: getAlternatives
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: "200 response: Alternatives accessed"
+          schema:
+            $ref: '#/definitions/ListOfAlternative'
+        400:
+          description: "400 response: Invalid input"
+    post:
+      tags:
+      - members
+      operationId: completeChoice
+      description: completes a choice by selecting an alternative
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: idAlternative
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: "200 reposnse: Choice completed"
+        400:
+          description: "400 response: Invalid input"
+    
+  /feedback:
+    get:
+      tags:
+      - members
+      operationId: getFeedback
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: "200 response: Feedback accessed"
+          schema:
+            $ref: '#/definitions/ListOfFeedback'
+        400:
+          description: "400 response: Invalid input"
+    post:
+      tags:
+      - members
+      operationId: addFeedback
+      description: Requests to add feedback to an alternative
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: FeedbackRequest
+        required: true
+        schema:
+          $ref: '#/definitions/FeedbackRequest'
+      responses:
+        200:
+          description: "200 reposnse: Feedback added"
+          schema:
+            $ref: '#/definitions/Feedback'
+        400:
+          description: "400 response: Invalid input"
+          
+  /approval:
+    get:
+      tags:
+      - members
+      operationId: getApprovals
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: "200 response: Approvals accessed"
+          schema:
+            $ref: '#/definitions/ListOfMembers'
+        400:
+          description: "400 response: Invalid input"
+    post:
+      tags:
+      - members
+      operationId: selectApproval
+      description: requests an approval of an alternative
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: ApproveRequest
+        required: true
+        schema:
+          $ref: '#/definitions/ApproveRequest'
+      responses:
+        200:
+          description: "200 response: Approval added"
+        400:
+          description: "400 response: Invalid input"
+          
+  /disapproval:
+    get:
+      tags:
+      - members
+      operationId: getDisapprovals
+      produces: 
+      - application/json
+      responses:
+        200:
+          description: "200 response: Disapprovals accessed"
+          schema:
+            $ref: '#/definitions/ListOfMembers'
+        400:
+          description: "400 response: Invalid input"
+    post:
+      tags:
+      - members
+      operationId: selectDisapproval
+      description: requests a disapproval of an alternative
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: DisapproveRequest
+        required: true
+        schema:
+          $ref: '#/definitions/DisapproveRequest'
+      responses:
+        200:
+          description: "200 response: Disapprove added"
+        400:
+          description: "400 response: Invalid input"
+          
+  /unselectRating:
+    post:
+      tags:
+      - members
+      operationId: unselectRating
+      description: Requests to unselect approval/disapproval of an alternative
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: UnselectRatingRequest
+        required: true
+        schema:
+          $ref: '#/definitions/UnselectRatingRequest'
+      responses:
+        200:
+          description: "200 response: Rating unselected"
+        400:
+          description: "400 response: Invalid input"
+  /delete:
+    post:
+      tags:
+      - admins
+      operationId: deleteChoices
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: days
+        schema: 
+          type: number
+        required: true
+      responses:
+        200:
+          description: "200 response: Choices deleted"
+        400:
+          description: "400 response: Invalid input"
+          
+  /register:
+    post:
+      tags:
+      - members
+      operationId: registerForChoice
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Credentials
+        schema: 
+          $ref: '#/definitions/Credentials'
+        required: true
+      responses:
+        200:
+          description: "200 response: Registered for Choice"
+        400:
+          description: "400 response: Invalid input"
+  
 definitions:
-  Choice:
-    type: "object"
+  ChoiceRequest:
+    type: object
     required:
-    - "description"
-    - "listOfAlternatives"
-    - "listOfTeamMembers"
+    - description
+    - numMembers
+    - alternatives
     properties:
       description:
-        type: "string"
-      listOfAlternatives:
-        type: "object" #should be schema
-      listOfTeamMembers:
-        type: "object" #should be schema
+        type: string
+      numMembers:
+        type: integer
+      alternatives:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            description: 
+              type: string
+        minItems: 2
+        maxItems: 5
+  Choice:
+    type: object
+    required:
+    - id
+    - description
+    - numMembers
+    - alternatives
+    - startDate
+    - completionDate
+    properties:
+      id:
+        type: string
+        format: uuid
+      description:
+        type: string
+      numMembers:
+        type: integer
+      alternatives:
+        type: array
+        items:
+          $ref: '#/definitions/Alternative'
+        minItems: 2
+        maxItems: 5
+      startDate:
+        type: string
+        format: date-time
+      completionDate:
+        type: string
+        format: date-time
   ListOfChoices:
-    type: "array"
+    type: array
     items:
-      $ref: "#/definitions/Choice"
+      $ref: '#/definitions/Choice'
+  Alternative:
+    type: object
+    required:
+    - choice id
+    - id
+    - name
+    - description
+    properties:
+      choice id:
+        type: string
+        format: uuid
+      id:
+        type: string
+        format: uuid
+      name:
+        type: string
+      description:
+        type: string
+  ListOfAlternative:
+    type: array
+    items:
+      $ref: '#/definitions/Alternative'
+  FeedbackRequest:
+    type: object
+    required:
+    - contents
+    properties:
+      contents:
+        type: string
+  Feedback:
+    type: object
+    required:
+    - alternative id
+    - contents
+    - memberName
+    - timestamp
+    properties:
+      alternative id:
+        type: string
+        format: uuid
+      contents:
+        type: string
+      memberName:
+        type: string
+      timestamp:
+        type: string
+        format: date-time
+  ListOfFeedback:
+    type: array
+    items: 
+      $ref: '#/definitions/Feedback' 
+  DisapproveRequest:
+    type: object
+    required:
+    - alternative id 
+    - raterName
+    properties:
+      alternative id:
+        type: string
+        format: uuid
+      raterName:
+        type: string
+  ApproveRequest:
+    type: object
+    required:
+    - alternative id
+    - raterName
+    properties:
+      alternative id:
+        type: string
+        format: uuid
+      raterName:
+        type: string
+  UnselectRatingRequest:
+    type: object
+    required:
+    - alternative id
+    - raterName
+    properties:
+      alternative id:
+        type: string
+        format: uuid
+      raterName:
+        type: string
+  ListOfMembers:
+    type: object
+    required:
+    - count
+    - memberNames
+    properties:
+      count:
+        type: integer
+      memberNames:
+        type: array
+        items:
+          type: string
+  Credentials:
+    type: object
+    required:
+    - memberName
+    - idChoice
+    properties:
+      memberName:
+        type: string
+      password:
+        type: string
+        format: password
+      idChoice:
+        type: string
+        format: uuid
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /jpayvazian/cs3733Zig/1.0.0
+schemes:
+ - https
