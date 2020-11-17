@@ -416,11 +416,8 @@ definitions:
   ListOfMembers:
     type: object
     required:
-    - count
     - memberNames
     properties:
-      count:
-        type: integer
       memberNames:
         type: array
         items:
