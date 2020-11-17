@@ -1,12 +1,12 @@
 window.onload = () => {
-    document.querySelector('#createChoice').onclick = function(e) {
+    document.querySelector('#createChoice').onclick = e=> {
         e.preventDefault()
         const inputs = document.querySelectorAll('.choiceField')
         const alternatives = createAlternatives()
         console.log(alternatives)
         fetch('/createChoice', {
             method:'POST',
-            body:JSON.stringify({description:inputs[0].value,numPeople:inputs[1].value, alternatives}),
+            body:{description:inputs[0].value,numPeople:inputs[1].value, alternatives},
             headers: {
                 'Content-Type':'application/json'
             }
@@ -24,11 +24,11 @@ window.onload = () => {
         const descriptions = document.querySelectorAll(".altdescription")
         let count = 0;
         for(let i=0; i<5; i++) {
-            count += (names[i].value!=""&&descriptions[i].value!="")?1:0
+            count += names[i].value!=""&&descriptions[i].value!=""
         }
         document.querySelector('#createChoice').disabled = count < 2 || document.querySelector('#choicedescription').value=='' || document.querySelector('#numMembers').value<1
     })
-    document.querySelector('#registerchoice').onclick = function(e) {
+    document.querySelector('#registerchoice').onclick = e => {
         e.preventDefault()
         //window.location.href = 'choice.html?c='+document.querySelector('#choicecode').value
         const inputs = document.querySelectorAll('.registerFields')
@@ -40,7 +40,7 @@ window.onload = () => {
         //(2) invalid password for created user
         fetch('/registerChoice', {
             method:'POST',
-            body:JSON.stringify({code: inputs[0].value, username: inputs[1].value, password: inputs[2].value}),
+            body:{code: inputs[0].value, username: inputs[1].value, password: inputs[2].value},
             headers: {
                 'Content-Type':'application/json'
             }
