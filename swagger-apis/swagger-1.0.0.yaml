@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  description: CS3733 Zig Choice Scheduler API
+  description: CS3733 Zig Choice API
   version: 1.0.0
   title: CS3733 Zig API
   # Team developer contact info 
@@ -159,6 +159,8 @@ paths:
       responses:
         200:
           description: "200 response: Approval added"
+          schema:
+            $ref: '#/definitions/Member'
         400:
           description: "400 response: Invalid input"
           
@@ -194,6 +196,8 @@ paths:
       responses:
         200:
           description: "200 response: Disapprove added"
+          schema:
+            $ref: '#/definitions/Member'
         400:
           description: "400 response: Invalid input"
           
@@ -236,6 +240,8 @@ paths:
       responses:
         200:
           description: "200 response: Choices deleted"
+          schema:
+            $ref: '#/definitions/ListOfChoices'
         400:
           description: "400 response: Invalid input"
           
@@ -342,8 +348,15 @@ definitions:
     type: object
     required:
     - contents
+    - alternative id
+    - memberName
     properties:
       contents:
+        type: string
+      alternative id: 
+        type: string
+        format: uuid
+      memberName:
         type: string
   Feedback:
     type: object
