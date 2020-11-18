@@ -55,6 +55,7 @@ paths:
             $ref: '#/definitions/Choice'
         400:
           description: "400 response: Invalid input"
+  
   /alternative:
     get:
       tags:
@@ -222,6 +223,7 @@ paths:
           description: "200 response: Rating unselected"
         400:
           description: "400 response: Invalid input"
+
   /delete:
     post:
       tags:
@@ -414,14 +416,9 @@ definitions:
       raterName:
         type: string
   ListOfMembers:
-    type: object
-    required:
-    - memberNames
-    properties:
-      memberNames:
-        type: array
-        items:
-          type: string
+    type: array
+    items:
+      type: string
   Credentials:
     type: object
     required:
