@@ -1,17 +1,12 @@
 package cs3733.zig.choice;
 
 import java.util.List;
+
 import java.util.UUID;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-
-import cs3733.zig.choice.db.ChoicesDAO;
-import cs3733.zig.choice.http.CreateChoiceRequest;
-import cs3733.zig.choice.http.CreateChoiceResponse;
-import cs3733.zig.choice.model.Alternative;
-import cs3733.zig.choice.model.Choice;
 
 public class CreateChoiceHandler implements RequestHandler<Object, String> {
 	
