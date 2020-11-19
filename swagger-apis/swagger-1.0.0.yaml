@@ -24,11 +24,12 @@ paths:
       tags:
       - admins
       operationId: requestChoices
+      description: admin request for report of choices
       produces:
       - application/json
       responses:
         200:
-          description: "200 response: Choice report accessed"
+          description: "200 response: Choice report printed"
           schema:
             $ref: "#/definitions/ListOfChoices"
         400:
@@ -78,20 +79,7 @@ paths:
         400:
           description: "400 response: Invalid input"
   
-  /alternative:
-    get:
-      tags:
-      - members
-      operationId: getAlternatives
-      produces: 
-      - application/json
-      responses:
-        200:
-          description: "200 response: Alternatives accessed"
-          schema:
-            $ref: '#/definitions/ListOfAlternative'
-        400:
-          description: "400 response: Invalid input"
+  /completeChoice:
     post:
       tags:
       - members
@@ -107,26 +95,14 @@ paths:
         required: true
         schema:
           type: string
+          format: uuid
       responses:
         200:
           description: "200 reposnse: Choice completed"
         400:
-          description: "400 response: Invalid input"
+          description: "400 response: Invalid input or choice already completed"
     
-  /feedback:
-    get:
-      tags:
-      - members
-      operationId: getFeedback
-      produces: 
-      - application/json
-      responses:
-        200:
-          description: "200 response: Feedback accessed"
-          schema:
-            $ref: '#/definitions/ListOfFeedback'
-        400:
-          description: "400 response: Invalid input"
+  /addFeedback:
     post:
       tags:
       - members
@@ -150,25 +126,12 @@ paths:
         400:
           description: "400 response: Invalid input"
           
-  /approval:
-    get:
-      tags:
-      - members
-      operationId: getApprovals
-      produces: 
-      - application/json
-      responses:
-        200:
-          description: "200 response: Approvals accessed"
-          schema:
-            $ref: '#/definitions/ListOfMembers'
-        400:
-          description: "400 response: Invalid input"
+  /selectApproval:
     post:
       tags:
       - members
       operationId: selectApproval
-      description: requests an approval of an alternative
+      description: requests an approval of an alternative, output shows member's name under approvals 
       consumes:
       - application/json
       produces:
@@ -181,31 +144,18 @@ paths:
           $ref: '#/definitions/ApproveRequest'
       responses:
         200:
-          description: "200 response: Approval added"
+          description: "200 response: Approval selected"
           schema:
             type: string
         400:
           description: "400 response: Invalid input"
           
-  /disapproval:
-    get:
-      tags:
-      - members
-      operationId: getDisapprovals
-      produces: 
-      - application/json
-      responses:
-        200:
-          description: "200 response: Disapprovals accessed"
-          schema:
-            $ref: '#/definitions/ListOfMembers'
-        400:
-          description: "400 response: Invalid input"
+  /selectDisapproval:
     post:
       tags:
       - members
       operationId: selectDisapproval
-      description: requests a disapproval of an alternative
+      description: requests a disapproval of an alternative, output shows member name under disapprovals
       consumes:
       - application/json
       produces:
@@ -218,7 +168,7 @@ paths:
           $ref: '#/definitions/DisapproveRequest'
       responses:
         200:
-          description: "200 response: Disapprove added"
+          description: "200 response: Disapprove selected"
           schema:
             type: string
         400:
@@ -246,12 +196,12 @@ paths:
         400:
           description: "400 response: Invalid input"
 
-  /delete:
+  /deleteChoices:
     post:
       tags:
       - admins
       operationId: deleteChoices
-      description: deletes stale choies by specified amount of days, returns list of choices deleted for extendability
+      description: admin request to delete stale choices from N days old
       consumes:
       - application/json
       produces:
@@ -265,17 +215,15 @@ paths:
       responses:
         200:
           description: "200 response: Choices deleted"
-          schema:
-            $ref: '#/definitions/ListOfChoices'
         400:
           description: "400 response: Invalid input"
           
-  /register:
+  /registerForChoice:
     post:
       tags:
       - members
       operationId: registerForChoice
-      description: request to register for a choice
+      description: Request to register for a choice
       consumes:
       - application/json
       produces:
@@ -289,8 +237,10 @@ paths:
       responses:
         200:
           description: "200 response: Registered for Choice"
+          schema:
+            $ref: '#/definitions/Member'
         400:
-          description: "400 response: Invalid input"
+          description: "400 response: Invalid input or maxMembers reached"
   
 definitions:
   ChoiceRequest:
@@ -320,18 +270,24 @@ definitions:
     required:
     - id
     - description
-    - numMembers
+    - maxMembers
+    - members
     - alternatives
     - startDate
     - completionDate
+    - isCompleted
     properties:
       id:
         type: string
         format: uuid
       description:
         type: string
-      numMembers:
+      maxMembers:
         type: integer
+      members:
+        type: array
+        items:
+          $ref: '#/definitions/Member'
       alternatives:
         type: array
         items:
@@ -344,6 +300,8 @@ definitions:
       completionDate:
         type: string
         format: date-time
+      isCompleted:
+        type: boolean
   ListOfChoices:
     type: array
     items:
@@ -351,98 +309,101 @@ definitions:
   Alternative:
     type: object
     required:
-    - idChoice
-    - id
+    - idAlternative
     - name
     - description
+    - feedback
+    - approves
+    - disapproves
     properties:
-      idChoice:
-        type: string
-        format: uuid
-      id:
+      idAlternative:
         type: string
         format: uuid
       name:
         type: string
       description:
         type: string
-  ListOfAlternative:
-    type: array
-    items:
-      $ref: '#/definitions/Alternative'
+      feedback:
+        type: array
+        items:
+          $ref: '#/definitions/Feedback'
+      approves:
+        type: array
+        items: 
+          $ref: "#/definitions/Member"
+      disapproves:
+        type: array
+        items: 
+          $ref: "#/definitions/Member"
   FeedbackRequest:
     type: object
     required:
     - contents
     - idAlternative
-    - memberName
+    - idMember
     properties:
       contents:
         type: string
       idAlternative: 
         type: string
         format: uuid
-      memberName:
+      idMember:
         type: string
+        format: uuid
   Feedback:
     type: object
     required:
-    - idAlternative
+    - idFeedback
     - contents
-    - memberName
+    - member
     - timestamp
     properties:
-      idAlternative:
+      idFeedback:
         type: string
         format: uuid
       contents:
         type: string
-      memberName:
-        type: string
+      member:
+        $ref: '#/definitions/Member'
       timestamp:
         type: string
         format: date-time
-  ListOfFeedback:
-    type: array
-    items: 
-      $ref: '#/definitions/Feedback' 
   DisapproveRequest:
     type: object
     required:
     - idAlternative
-    - raterName
+    - idMember
     properties:
       idAlternative:
         type: string
         format: uuid
-      raterName:
+      idMember:
         type: string
+        format: uuid
   ApproveRequest:
     type: object
     required:
     - idAlternative
-    - raterName
+    - idMember
     properties:
       idAlternative:
         type: string
         format: uuid
-      raterName:
+      idMember:
         type: string
+        format: uuid
   UnselectRatingRequest:
     type: object
     required:
     - idAlternative
-    - raterName
+    - idMember
     properties:
       idAlternative:
         type: string
         format: uuid
-      raterName:
+      idMember:
         type: string
-  ListOfMembers:
-    type: array
-    items:
-      type: string
+        format: uuid
   Credentials:
     type: object
     required:
@@ -457,6 +418,20 @@ definitions:
       idChoice:
         type: string
         format: uuid
+  Member:
+    type: object
+    required:
+    - idMember
+    - name
+    properties:
+      idMember:
+        type: string
+        format: uuid
+      name:
+        type: string
+      password:
+        type: string
+        format: password
 
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
