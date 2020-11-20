@@ -1,5 +1,9 @@
 package cs3733.zig.choice.model;
-
-public class Rating {
-
+/**
+ * 
+ * @author Luke (Zig)
+ *
+ */
+public enum Rating {
+	APPROVE, DISAPPROVE
 }
