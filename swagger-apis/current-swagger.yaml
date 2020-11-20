@@ -1,0 +1,241 @@
+swagger: '2.0'
+info:
+  description: CS3733 Zig Choice API
+  version: 1.0.0
+  title: CS3733 Zig API
+  # Team developer contact info 
+  contact: 
+    email: jpayvazian@wpi.edu
+
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+
+# tags are used for organizing operations
+tags:
+- name: admins
+  description: Secured Admin-only calls
+- name: members
+  description: Operations available to team members
+
+paths:     
+  /registerForChoice:
+    post:
+      tags:
+      - members
+      operationId: registerForChoice
+      description: Request to register for a choice
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: Credentials
+        schema: 
+          $ref: '#/definitions/Credentials'
+        required: true
+      responses:
+        200:
+          description: "200 response: Registered for Choice"
+          schema:
+            $ref: '#/definitions/Member'
+        400:
+          description: "400 response: Invalid input or maxMembers reached"
+  
+definitions:
+  ChoiceRequest:
+    type: object
+    required:
+    - description
+    - numMembers
+    - alternatives
+    properties:
+      description:
+        type: string
+      numMembers:
+        type: integer
+      alternatives:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+            description: 
+              type: string
+        minItems: 2
+        maxItems: 5
+  Choice:
+    type: object
+    required:
+    - id
+    - description
+    - maxMembers
+    - members
+    - alternatives
+    - startDate
+    - completionDate
+    - isCompleted
+    properties:
+      id:
+        type: string
+        format: uuid
+      description:
+        type: string
+      maxMembers:
+        type: integer
+      members:
+        type: array
+        items:
+          $ref: '#/definitions/Member'
+      alternatives:
+        type: array
+        items:
+          $ref: '#/definitions/Alternative'
+        minItems: 2
+        maxItems: 5
+      startDate:
+        type: string
+        format: date-time
+      completionDate:
+        type: string
+        format: date-time
+      isCompleted:
+        type: boolean
+  ListOfChoices:
+    type: array
+    items:
+      $ref: '#/definitions/Choice'
+  Alternative:
+    type: object
+    required:
+    - idAlternative
+    - name
+    - description
+    - feedback
+    - approves
+    - disapproves
+    properties:
+      idAlternative:
+        type: string
+        format: uuid
+      name:
+        type: string
+      description:
+        type: string
+      feedback:
+        type: array
+        items:
+          $ref: '#/definitions/Feedback'
+      approves:
+        type: array
+        items: 
+          $ref: "#/definitions/Member"
+      disapproves:
+        type: array
+        items: 
+          $ref: "#/definitions/Member"
+  FeedbackRequest:
+    type: object
+    required:
+    - contents
+    - idAlternative
+    - idMember
+    properties:
+      contents:
+        type: string
+      idAlternative: 
+        type: string
+        format: uuid
+      idMember:
+        type: string
+        format: uuid
+  Feedback:
+    type: object
+    required:
+    - idFeedback
+    - contents
+    - member
+    - timestamp
+    properties:
+      idFeedback:
+        type: string
+        format: uuid
+      contents:
+        type: string
+      member:
+        $ref: '#/definitions/Member'
+      timestamp:
+        type: string
+        format: date-time
+  DisapproveRequest:
+    type: object
+    required:
+    - idAlternative
+    - idMember
+    properties:
+      idAlternative:
+        type: string
+        format: uuid
+      idMember:
+        type: string
+        format: uuid
+  ApproveRequest:
+    type: object
+    required:
+    - idAlternative
+    - idMember
+    properties:
+      idAlternative:
+        type: string
+        format: uuid
+      idMember:
+        type: string
+        format: uuid
+  UnselectRatingRequest:
+    type: object
+    required:
+    - idAlternative
+    - idMember
+    properties:
+      idAlternative:
+        type: string
+        format: uuid
+      idMember:
+        type: string
+        format: uuid
+  Credentials:
+    type: object
+    required:
+    - memberName
+    - idChoice
+    properties:
+      memberName:
+        type: string
+      password:
+        type: string
+        format: password
+      idChoice:
+        type: string
+        format: uuid
+  Member:
+    type: object
+    required:
+    - idMember
+    - name
+    properties:
+      idMember:
+        type: string
+        format: uuid
+      name:
+        type: string
+      password:
+        type: string
+        format: password
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+basePath: /jpayvazian/cs3733Zig/1.0.0
+schemes:
+ - https
