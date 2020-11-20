@@ -1,5 +1,6 @@
 package cs3733.zig.choice.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -17,13 +18,15 @@ public class Choice {
 	final private int maximumMembers;
 	private boolean isCompleted;
 	final private List<Member> teamMember;
+	final private Date startDate;
+	private Date completionDate;
 	/**
 	 * Constructor for a choice
 	 * @param description
 	 * @param alternatives
 	 * @param maximumMembers
 	 */
-	public Choice(String description, Alternative[] alternatives, int maximumMembers) {
+	public Choice(String description, Alternative[] alternatives, int maximumMembers, Date startDate) {
 		this.id = UUID.randomUUID().toString();
 		this.description = description;
 		this.alternatives = alternatives;
@@ -31,6 +34,8 @@ public class Choice {
 		this.maximumMembers = maximumMembers;
 		this.setCompleted(false);
 		this.teamMember = new ArrayList<>();
+		this.startDate = startDate;
+		this.setCompletionDate(null);
 	}
 
 	/**
@@ -91,5 +96,16 @@ public class Choice {
 		return teamMember;
 	}
 	
+	public Date getStartDate() {
+		return startDate;
+	}
+	
+	public void setCompletionDate(Date date) {
+		this.completionDate = date;
+	}
+	
+	public Date getCompletionDate() {
+		return completionDate;
+	}
 	
 }
