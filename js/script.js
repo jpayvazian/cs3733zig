@@ -1,12 +1,13 @@
+const url = 'https://7n76zcrt6j.execute-api.us-east-2.amazonaws.com/alpha1'
 window.onload = () => {
     document.querySelector('#createChoice').onclick = e=> {
         e.preventDefault()
         const inputs = document.querySelectorAll('.choiceField')
         const alternatives = createAlternatives()
         console.log(alternatives)
-        fetch('/createChoice', {
+        fetch(url+'/createChoice', {
             method:'POST',
-            body:{description:inputs[0].value,numPeople:inputs[1].value, alternatives},
+            body:JSON.stringify({description:inputs[0].value,numPeople:inputs[1].value, alternatives}),
             headers: {
                 'Content-Type':'application/json'
             }
@@ -31,16 +32,16 @@ window.onload = () => {
     document.querySelector('#registerchoice').onclick = e => {
         e.preventDefault()
         //window.location.href = 'choice.html?c='+document.querySelector('#choicecode').value
-        const inputs = document.querySelectorAll('.registerFields')
+        const inputs = document.querySelectorAll('.registerField')
         //NOTE: this should serve as both a log in and a sign up
         //basically, if user does not exist, we create one
         //if user exists, we log in as them
         //only time we error are:
         //(1) invalid code
         //(2) invalid password for created user
-        fetch('/registerChoice', {
+        fetch(url+'/registerForChoice', {
             method:'POST',
-            body:{code: inputs[0].value, username: inputs[1].value, password: inputs[2].value},
+            body:JSON.stringify({memberName: inputs[1].value, password: inputs[2].value, idChoice: inputs[0].value}),
             headers: {
                 'Content-Type':'application/json'
             }
