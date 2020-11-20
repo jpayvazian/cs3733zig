@@ -1,4 +1,4 @@
-const url = 'https://7n76zcrt6j.execute-api.us-east-2.amazonaws.com/alpha1'
+const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha1'
 window.onload = () => {
     document.querySelector('#createChoice').onclick = e=> {
         e.preventDefault()
@@ -7,10 +7,7 @@ window.onload = () => {
         console.log(alternatives)
         fetch(url+'/createChoice', {
             method:'POST',
-            body:JSON.stringify({description:inputs[0].value,numPeople:inputs[1].value, alternatives}),
-            headers: {
-                'Content-Type':'application/json'
-            }
+            body:JSON.stringify({description:inputs[0].value,numPeople:inputs[1].value, alternatives})
         })
         .then( response => response.json())
         .then(json=> {
@@ -41,10 +38,7 @@ window.onload = () => {
         //(2) invalid password for created user
         fetch(url+'/registerForChoice', {
             method:'POST',
-            body:JSON.stringify({memberName: inputs[1].value, password: inputs[2].value, idChoice: inputs[0].value}),
-            headers: {
-                'Content-Type':'application/json'
-            }
+            body:JSON.stringify({memberName: inputs[1].value, password: inputs[2].value, idChoice: inputs[0].value})
         })
         .then( response => response.json())
         .then(json=> {

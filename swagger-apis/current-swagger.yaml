@@ -39,7 +39,7 @@ paths:
         200:
           description: "200 response: Registered for Choice"
           schema:
-            $ref: '#/definitions/Member'
+            type: string
         400:
           description: "400 response: Invalid input or maxMembers reached"
   
