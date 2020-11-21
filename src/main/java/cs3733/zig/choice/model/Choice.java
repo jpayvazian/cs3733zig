@@ -1,6 +1,6 @@
 package cs3733.zig.choice.model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -18,15 +18,15 @@ public class Choice {
 	final private int maximumMembers;
 	private boolean isCompleted;
 	final private List<Member> teamMember;
-	final private Date startDate;
-	private Date completionDate;
+	final private Timestamp startDate;
+	private Timestamp completionDate;
 	/**
 	 * Constructor for a choice
 	 * @param description
 	 * @param alternatives
 	 * @param maximumMembers
 	 */
-	public Choice(String description, Alternative[] alternatives, int maximumMembers, Date startDate) {
+	public Choice(String description, Alternative[] alternatives, int maximumMembers, Timestamp startDate) {
 		this.id = UUID.randomUUID().toString();
 		this.description = description;
 		this.alternatives = alternatives;
@@ -96,15 +96,15 @@ public class Choice {
 		return teamMember;
 	}
 	
-	public Date getStartDate() {
+	public Timestamp getStartDate() {
 		return startDate;
 	}
 	
-	public void setCompletionDate(Date date) {
-		this.completionDate = date;
+	public void setCompletionDate(Timestamp time) {
+		this.completionDate = time;
 	}
 	
-	public Date getCompletionDate() {
+	public Timestamp getCompletionDate() {
 		return completionDate;
 	}
 	
