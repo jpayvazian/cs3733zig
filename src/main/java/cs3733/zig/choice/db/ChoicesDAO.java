@@ -81,17 +81,16 @@ java.sql.Connection conn;
                 return false;
             }
             
-            int i = 0;
-            while(choice.getAlternatives()[i] != null) {
-            ps = conn.prepareStatement("INSERT INTO " + tblAlt + " (idAlternative, idChoice, name, description) values(?,?,?,?);");
-            ps.setString(1, choice.getAlternatives()[i].getId());
-            ps.setString(2, choice.getId());
-            ps.setString(3, choice.getAlternatives()[i].getName());
-            ps.setString(4, choice.getAlternatives()[i].getDescription());
-            ps.execute();
-            i++;
-            }
-            
+			for (int i = 0; i < 5; i++) {
+				if (choice.getAlternatives()[i] != null) {
+					ps = conn.prepareStatement("INSERT INTO " + tblAlt + " (idAlternative, idChoice, name, description) values(?,?,?,?);");
+					ps.setString(1, choice.getAlternatives()[i].getId());
+					ps.setString(2, choice.getId());
+					ps.setString(3, choice.getAlternatives()[i].getName());
+					ps.setString(4, choice.getAlternatives()[i].getDescription());
+					ps.execute();
+				}
+			}
             return true;
 
         } catch (Exception e) {

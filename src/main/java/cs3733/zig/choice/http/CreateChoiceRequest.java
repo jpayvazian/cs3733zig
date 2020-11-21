@@ -29,13 +29,14 @@ public class CreateChoiceRequest {
 
 	@Override
 	public String toString() {
-		int i = 0;
 		String second = "";
 		String first = "RegisterForChoice(" + description + "," + maxMembers + ","; 
-				while(alternatives[i] != null) {
-						second += alternatives[i].getName() + "," + alternatives[i].getDescription() + "\n"; 
-						i++;
-				}
+		for (int i = 0; i < 5; i++) {
+			if (alternatives[i] != null) {
+				second += alternatives[i].getName() + "," + alternatives[i].getDescription() + "\n";
+				i++;
+			}
+		}
 				return first + second + ")";
 	}
 }
