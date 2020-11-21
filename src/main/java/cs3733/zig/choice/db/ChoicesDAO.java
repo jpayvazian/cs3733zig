@@ -2,18 +2,11 @@ package cs3733.zig.choice.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
-
-import cs3733.zig.choice.model.Member;
 
 public class ChoicesDAO {
-java.sql.Connection conn;
 	
-	String tblNameChoices = "Choices";   // Exact capitalization
-	String tblNameMembers = "Members";
+	private java.sql.Connection conn;
+	final private String tableName = "Choices";   // Exact capitalization
 
     public ChoicesDAO() {
     	try  {
@@ -27,7 +20,7 @@ java.sql.Connection conn;
         
         try {
             String code = null;
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblNameChoices + " WHERE idChoice=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
             ps.setString(1,  name);
             ResultSet resultSet = ps.executeQuery();
             
@@ -46,33 +39,11 @@ java.sql.Connection conn;
         }
     }
 
-	public List<String> getListOfMembers(String idChoice) throws Exception {
-		try {
-			List<String> listOfMembers = new ArrayList<>(); //TODO: make i equal to max, which we CAN GET
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblNameMembers + " WHERE idChoice=?;");
-            ps.setString(1,  idChoice);
-            ResultSet resultSet = ps.executeQuery();
-            
-            while (resultSet.next()) {
-                listOfMembers.add(resultSet.getString("idChoice"));
-            }
-                        
-            resultSet.close();
-            ps.close();
-            
-            return listOfMembers;
-			
-		} catch (Exception e) {
-			//no list! since the code must havebeen valid, else we wouldn't be here...
-			return new ArrayList<String>();
-		}
-		
-	}
+	
 
 	public int getMaxMemberCount(String idChoice) {
-		// TODO Auto-generated method stub
 		try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblNameChoices + " WHERE idChoice=?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
             ps.setString(1,  idChoice);
             ResultSet resultSet = ps.executeQuery();   
             int count = 0;
@@ -90,30 +61,4 @@ java.sql.Connection conn;
 			return -1;
 		}
 	}
-
-	public Member getMember(String idChoice, String memberName) {
-		try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tblNameMembers + " WHERE idChoice=?;");
-            ps.setString(1,  idChoice);
-            ResultSet resultSet = ps.executeQuery();  
-            Member member = null;
-            while (resultSet.next()) {
-                String temp = resultSet.getString("memberName");
-                if(temp==memberName) {
-                	member =  new Member(resultSet.getString(2), resultSet.getString(3));
-                	break;
-                }
-            }
-            resultSet.close();
-            ps.close();
-            return member;
-			
-		} catch (Exception e) {
-			//if this errors we are in deep trouble
-			return null;
-		}
-	}
-	
-	
-
 }

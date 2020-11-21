@@ -9,6 +9,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import cs3733.zig.choice.db.ChoicesDAO;
+import cs3733.zig.choice.db.MembersDAO;
 import cs3733.zig.choice.http.RegisterForChoiceRequest;
 import cs3733.zig.choice.http.RegisterForChoiceResponse;
 import cs3733.zig.choice.model.Member;
@@ -39,13 +40,30 @@ public class RegisterForChoiceHandler implements RequestHandler<RegisterForChoic
 			} else if(isMaxCapacity(input.getIdChoice())){
 				return new RegisterForChoiceResponse(400, "Database is full!");
 			} else {
+				//here we make new member
+				createMember(input);
 				return new RegisterForChoiceResponse(input.getMemberName(), 200); 
 			}
 		}
 	}
+	
+	private void createMember(RegisterForChoiceRequest input) {
+		createMemberFromRDS(input.getIdChoice(), input.getMemberName(), input.getPassword());
+	}
+
+	private void createMemberFromRDS(String idChoice, String memberName, String password) {
+		if (logger != null) logger.log("in createMemberFromRDS");
+		MembersDAO dao = new MembersDAO();
+		try {
+			dao.createMember(idChoice, memberName, password);
+		} catch (Exception e) {
+			if (logger != null) logger.log("we are bad");
+		}
+	}
 
 	private boolean invalidCredentials(String idChoice, String memberName, String password) {
-		return loadMemberFromRDS(idChoice, memberName).isCorrectPassword(password);
+		Member m = loadMemberFromRDS(idChoice, memberName);
+		return !m.isCorrectPassword(password);
 	}
 
 	private boolean isMemberRegistered(String idChoice, String memberName) {
@@ -55,7 +73,7 @@ public class RegisterForChoiceHandler implements RequestHandler<RegisterForChoic
 	
 	private Member loadMemberFromRDS(String idChoice, String memberName) {
 		if (logger != null) logger.log("in loadMemberFromRDS");
-		ChoicesDAO dao = new ChoicesDAO();
+		MembersDAO dao = new MembersDAO();
 		Member grabbedName = dao.getMember(idChoice, memberName);
 		return grabbedName;
 	}
@@ -69,7 +87,7 @@ public class RegisterForChoiceHandler implements RequestHandler<RegisterForChoic
 	
 	private List<String> loadListOfMembersFromRDS(String idChoice) {
 		if (logger != null) logger.log("in loadListOfMembersFromRDS");
-		ChoicesDAO dao = new ChoicesDAO();
+		MembersDAO dao = new MembersDAO();
 		try {
 			List<String> rdsListOfMembers = dao.getListOfMembers(idChoice);
 			if (logger != null) logger.log("NUMBER OF CURRENT MEMBERS: " + rdsListOfMembers.size());

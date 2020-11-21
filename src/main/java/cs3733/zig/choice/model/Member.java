@@ -37,4 +37,8 @@ public class Member {
 		return password.equals(password2);
 	}
 	
+	@Override
+	public String toString() {
+		return "USERNAME: " + this.name + " PASSWORD: " + this.password;
+	}
 }
