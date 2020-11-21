@@ -1,5 +1,8 @@
 package cs3733.zig.choice;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.amazonaws.services.lambda.runtime.Context;
 
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -8,6 +11,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import cs3733.zig.choice.db.ChoicesDAO;
 import cs3733.zig.choice.http.RegisterForChoiceRequest;
 import cs3733.zig.choice.http.RegisterForChoiceResponse;
+import cs3733.zig.choice.model.Member;
 
 public class RegisterForChoiceHandler implements RequestHandler<RegisterForChoiceRequest,RegisterForChoiceResponse>{
 	
@@ -20,42 +24,76 @@ public class RegisterForChoiceHandler implements RequestHandler<RegisterForChoic
 		logger.log(input.toString());
 		
 		//first, validate if the code even exists
-		RegisterForChoiceResponse response;
 		if (!isCodeInDB(input.getIdChoice())) {
-			response = new RegisterForChoiceResponse(400, input.getIdChoice() + " is an invalid code");
+			return new RegisterForChoiceResponse(400, input.getIdChoice() + " is an invalid code");
 		} else {
-			//validate whether there is still space in the choice
-//			if (isMaxCapacity(input.getIdChoice())) {
-//				
-//			}
 			//validate whether member is in the DB
-			//validate if there is a password
-			
-			response = new RegisterForChoiceResponse(input.getMemberName(), 200);  // success
+			if(isMemberRegistered(input.getIdChoice(), input.getMemberName())) {
+				if(invalidCredentials(input.getIdChoice(), input.getMemberName(), input.getPassword())) {
+					//400 ERROR
+					return new RegisterForChoiceResponse(400, "Incorrect password");
+				} else {
+					//200 RESPONSE; LOG IN!
+					return new RegisterForChoiceResponse(input.getMemberName(), 200);
+				}
+			} else if(isMaxCapacity(input.getIdChoice())){
+				return new RegisterForChoiceResponse(400, "Database is full!");
+			} else {
+				return new RegisterForChoiceResponse(input.getMemberName(), 200); 
+			}
 		}
-		
-		return response;
 	}
 
-//	private boolean isMaxCapacity(String idChoice) {
-//		if (loadListOfMembersFromRDS(idChoice).length >= loadMaxMembersFromRDS(idChoice)) {
-//			
-//		}
-//	}
+	private boolean invalidCredentials(String idChoice, String memberName, String password) {
+		return loadMemberFromRDS(idChoice, memberName).isCorrectPassword(password);
+	}
+
+	private boolean isMemberRegistered(String idChoice, String memberName) {
+		return loadMemberFromRDS(idChoice, memberName)!=null;
+	}
 	
-//	private String[] loadListOfMembersFromRDS(String code) {
-//		
-//	}
 	
-//	private int loadMaxMembersFromRDS(String idChoice) {
-//		
-//	}
+	private Member loadMemberFromRDS(String idChoice, String memberName) {
+		if (logger != null) logger.log("in loadMemberFromRDS");
+		ChoicesDAO dao = new ChoicesDAO();
+		Member grabbedName = dao.getMember(idChoice, memberName);
+		return grabbedName;
+	}
+
+	private boolean isMaxCapacity(String idChoice) {
+		if (loadListOfMembersFromRDS(idChoice).size() >= loadMaxMembersFromRDS(idChoice)) {
+			return true;
+		}
+		return false;
+	}
+	
+	private List<String> loadListOfMembersFromRDS(String idChoice) {
+		if (logger != null) logger.log("in loadListOfMembersFromRDS");
+		ChoicesDAO dao = new ChoicesDAO();
+		try {
+			List<String> rdsListOfMembers = dao.getListOfMembers(idChoice);
+			if (logger != null) logger.log("NUMBER OF CURRENT MEMBERS: " + rdsListOfMembers.size());
+			return rdsListOfMembers;
+		} catch (Exception e) { //might not be a list of members (I THINK)
+			if (logger != null) logger.log("yo that ain't good chief");
+			return new ArrayList<String>();
+		}
+	}
+	
+	private int loadMaxMembersFromRDS(String idChoice) {
+		if (logger != null) logger.log("in loadListOfMembersFromRDS");
+		ChoicesDAO dao = new ChoicesDAO();
+		int rdsMaxMembers = dao.getMaxMemberCount(idChoice);
+		if (logger != null) logger.log("NUMBER OF MAX MEMBERS: " + rdsMaxMembers);
+		return rdsMaxMembers;
+		
+	}
 
 	private boolean isCodeInDB(String code) {
 		String rdsCode = "";
 		try {
 			rdsCode = loadCodeFromRDS(code);
-			return true;
+			return rdsCode!=null;
 		} catch(Exception e){
 			return false;
 		}

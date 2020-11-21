@@ -8,15 +8,15 @@ import java.util.Optional;
  */
 public class Member {
 	final private String name;
-	final private Optional<String> password;
+	final private String password;
 	/**
 	 * Constructor for Member
 	 * @param name
-	 * @param password
+	 * @param string
 	 */
-	public Member(String name, Optional<String> password) {
+	public Member(String name, String password) {
 		this.name = name;
-		this.password = password;
+		this.password = (password==null)?"":password;
 	}
 	
 	//(might include this in constructor as a field)
@@ -28,8 +28,13 @@ public class Member {
 		return name;
 	}
 
-	public Optional<String> getPassword() {
+	public String getPassword() {
 		return password;
+	}
+
+	public boolean isCorrectPassword(String password2) {
+		password2 = (password2==null)?"":password2;
+		return password.equals(password2);
 	}
 	
 }
