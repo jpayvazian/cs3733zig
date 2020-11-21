@@ -42,7 +42,9 @@ window.onload = () => {
         })
         .then( response => response.json())
         .then(json=> {
-            console.log(json)
+			if(json.statusCode==200) {
+				window.location.href='choice.html?idchoice='+json.idChoice
+			} else console.log("ERROR")
             //this is where we can let the client know if there are errors.
             //if there are not errors, we redirect client to choice page
         })

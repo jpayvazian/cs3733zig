@@ -35,14 +35,14 @@ public class RegisterForChoiceHandler implements RequestHandler<RegisterForChoic
 					return new RegisterForChoiceResponse(400, "Incorrect password");
 				} else {
 					//200 RESPONSE; LOG IN!
-					return new RegisterForChoiceResponse(input.getMemberName(), 200);
+					return new RegisterForChoiceResponse(input.getIdChoice(), 200);
 				}
 			} else if(isMaxCapacity(input.getIdChoice())){
-				return new RegisterForChoiceResponse(400, "Database is full!");
+				return new RegisterForChoiceResponse(400, "This choice is full!");
 			} else {
 				//here we make new member
 				createMember(input);
-				return new RegisterForChoiceResponse(input.getMemberName(), 200); 
+				return new RegisterForChoiceResponse(input.getIdChoice(), 200); 
 			}
 		}
 	}

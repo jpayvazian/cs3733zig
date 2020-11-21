@@ -2,9 +2,9 @@ package cs3733.zig.choice.http;
 
 public class RegisterForChoiceRequest {
 
-	String memberName;
-	String password;
-	String idChoice;
+	private String memberName;
+	private String password;
+	private String idChoice;
 	public String getMemberName() {
 		return memberName;
 	}
