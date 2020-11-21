@@ -1,7 +1,6 @@
 package cs3733.zig.choice;
 
-import java.util.List;
-import java.util.UUID;
+import java.sql.Timestamp;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -13,33 +12,36 @@ import cs3733.zig.choice.http.CreateChoiceResponse;
 import cs3733.zig.choice.model.Alternative;
 import cs3733.zig.choice.model.Choice;
 
-public class CreateChoiceHandler implements RequestHandler<Object, String> {
+
+public class CreateChoiceHandler implements RequestHandler<CreateChoiceRequest, CreateChoiceResponse> {
 	
 	LambdaLogger logger;
-/*
-	boolean createChoice(String description, int numMembers, List<Alternative> alternatives) throws Exception {
+
+	public String createChoice(String description, int maxMembers, Alternative[] alternatives) throws Exception {
 		if (logger != null) { logger.log("in createChoice"); }
 		ChoicesDAO dao = new ChoicesDAO();
 		
-		if(numMembers < 1 || alternatives.length < 2 || alternatives.length > 5){
-			return false;
-		} else { 
-			String id = UUID.randomUUID().toString();
-			Choice choice = new Choice(id, description, numMembers, alternatives);
+			java.util.Date date = new java.util.Date();
+			Timestamp startDate = new Timestamp(date.getTime());
+			Choice choice = new Choice(description, alternatives, maxMembers, startDate);
 	
-			return dao.addChoice(choice);
-		}
+			boolean create = dao.createChoice(choice);
+			if(create) { return choice.getId(); }
+			else return "";
 	}
 	
     @Override
     public CreateChoiceResponse handleRequest(CreateChoiceRequest req, Context context) {
       	logger = context.getLogger();
+      	logger.log("Loading Java Lambda handler of CreateChoiceHandler");
 		logger.log(req.toString());
 		
 		CreateChoiceResponse response;
 		try {
-				if (createChoice(req.description, req.numMembers, req.alternatives)) {
-					response = new CreateChoiceResponse(req.description);
+			String idChoice = createChoice(req.description, req.maxMembers, req.alternatives);
+			
+				if (idChoice != "") {
+					response = new CreateChoiceResponse(idChoice);
 				} else {
 					response = new CreateChoiceResponse(req.description, 400);
 				}
@@ -49,11 +51,5 @@ public class CreateChoiceHandler implements RequestHandler<Object, String> {
 
 		return response;
     }
-*/
 
-	@Override
-	public String handleRequest(Object input, Context context) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
