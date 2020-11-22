@@ -33,8 +33,7 @@ public class CreateChoiceRequest {
 		String first = "RegisterForChoice(" + description + "," + maxMembers + ","; 
 		for (int i = 0; i < 5; i++) {
 			if (alternatives[i] != null) {
-				second += alternatives[i].getName() + "," + alternatives[i].getDescription() + "\n";
-				i++;
+				second += alternatives[i].getName() + ":" + alternatives[i].getDescription() + " ";
 			}
 		}
 				return first + second + ")";

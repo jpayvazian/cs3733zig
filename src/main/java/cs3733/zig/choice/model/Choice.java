@@ -100,8 +100,8 @@ public class Choice {
 		return startDate;
 	}
 	
-	public void setCompletionDate(Timestamp ts) {
-		this.completionDate = ts;
+	public void setCompletionDate(Timestamp time) {
+		this.completionDate = time;
 	}
 	
 	public Timestamp getCompletionDate() {
