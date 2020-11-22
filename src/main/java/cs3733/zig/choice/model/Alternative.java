@@ -5,16 +5,18 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 /**
  * 
  * @author Luke (zig)
  *
  */
 public class Alternative {
-	final private String name;
-	final private String description;
-	final private List<Feedback> feedback;
-	final private Map<String, Rating> ratings;
+	private String id;
+	private String name;
+	private String description;
+	private List<Feedback> feedback;
+	private Map<String, Rating> ratings;
 	
 	/**
 	 * Constructor for Alternative
@@ -22,10 +24,16 @@ public class Alternative {
 	 * @param description
 	 */
 	public Alternative(String name, String description) {
+		this.id = UUID.randomUUID().toString();
 		this.name = name;
 		this.description = description;
 		this.feedback = new ArrayList<>();
 		this.ratings = new HashMap<>();
+	}
+	
+	//for JSON needs default constructor
+	public Alternative() {
+		
 	}
 	/**
 	 * IDEA:
@@ -89,6 +97,10 @@ public class Alternative {
 
 	public Map<String, Rating> getRatings() {
 		return ratings;
+	}
+	
+	public String getId() {
+		return id;
 	}
  	
 	

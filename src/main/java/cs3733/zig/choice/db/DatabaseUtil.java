@@ -18,7 +18,7 @@ public class DatabaseUtil {
 		// Make sysEnv variable lambdaTesting so we know we are locally testing
 		public final static String lambdaTesting = "lambdaTesting";
 		public final static String dbName = "cs3733zig";
-//		public final static String testName = "test";
+		public final static String testName = "test";
 		
 		// pooled across all usages.
 		static Connection conn;
@@ -31,6 +31,10 @@ public class DatabaseUtil {
 			
 			// this is resistant to any SQL-injection attack.
 			String schemaName = dbName;
+			String test = System.getenv("lambdaTesting");
+			if (test != null) {
+				schemaName = testName;
+			}
 			
 			// These three environment variables must be set!
 			String dbUsername = System.getenv("dbUsername");
