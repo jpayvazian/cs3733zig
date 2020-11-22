@@ -1,13 +1,15 @@
-const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha1'
+const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha3'
 window.onload = () => {
     document.querySelector('#createChoice').onclick = e=> {
         e.preventDefault()
         const inputs = document.querySelectorAll('.choiceField')
         const alternatives = createAlternatives()
-        console.log(alternatives)
+		const alternativeNames = alternatives.alternativeNames
+		const alternativeDescriptions = alternatives.alternativeDescriptions
+        console.log({description:inputs[0].value,numMembers:parseInt(inputs[1].value), alternativeNames, alternativeDescriptions})
         fetch(url+'/createChoice', {
             method:'POST',
-            body:JSON.stringify({description:inputs[0].value,numPeople:inputs[1].value, alternatives})
+            body:JSON.stringify({description:inputs[0].value,numMembers:parseInt(inputs[1].value), alternativeNames, alternativeDescriptions})
         })
         .then( response => response.json())
         .then(json=> {
@@ -61,11 +63,13 @@ window.onload = () => {
 const createAlternatives = () => {
     const names = document.querySelectorAll(".altname")
     const descriptions = document.querySelectorAll(".altdescription")
-    const alternatives = []
+    const alternativeNames = []
+	const alternativeDescriptions = []
     for(let i=0; i<names.length; i++) {
         if(names[i].value!=""&&descriptions[i].value!="") {
-            alternatives.push({name: names[i].value, description: descriptions[i].value})
+            alternativeNames.push(names[i].value)
+			alternativeDescriptions.push(descriptions[i].value)
         }
     }
-    return alternatives
+    return {alternativeNames, alternativeDescriptions}
 }

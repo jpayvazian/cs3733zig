@@ -115,5 +115,10 @@ public class Choice {
 	public Timestamp getCompletionDate() {
 		return completionDate;
 	}
+	//Not fully done yet!
+	@Override
+	public String toString() {
+		return "CHOICE. Des: " + this.description + " numMembers: " + this.maximumMembers + " other stuff in future!";
+	}
 	
 }

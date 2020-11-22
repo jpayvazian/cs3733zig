@@ -3,11 +3,8 @@ package cs3733.zig.choice.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.sql.Date;
 
 import cs3733.zig.choice.model.Alternative;
-
-import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
 import cs3733.zig.choice.model.Choice;
 

@@ -18,7 +18,7 @@ public class CreateChoiceHandler implements RequestHandler<CreateChoiceRequest, 
 	LambdaLogger logger;
 
 	public String createChoice(String description, int maxMembers, String[] alternativeNames, String[] alternativeDescriptions) throws Exception {
-		if (logger != null) { logger.log("in createChoice"); }
+		if (logger != null) logger.log("in createChoice");
 		ChoicesDAO dao = new ChoicesDAO();
 		
 			java.util.Date date = new java.util.Date();
@@ -31,7 +31,7 @@ public class CreateChoiceHandler implements RequestHandler<CreateChoiceRequest, 
 			}
 			
 			Choice choice = new Choice(description, alternatives, maxMembers, startDate);
-	
+			if(logger!=null) logger.log("CHOICE: " + choice.toString());
 			boolean create = dao.createChoice(choice);
 			if(create) { return choice.getId(); }
 			else return "";
@@ -45,7 +45,7 @@ public class CreateChoiceHandler implements RequestHandler<CreateChoiceRequest, 
 		
 		CreateChoiceResponse response;
 		try {
-			String idChoice = createChoice(req.description, req.maxMembers, req.alternativeNames, req.alternativeDescriptions);
+			String idChoice = createChoice(req.description, req.numMembers, req.alternativeNames, req.alternativeDescriptions);
 			
 				if (idChoice != "") {
 					response = new CreateChoiceResponse(idChoice);
