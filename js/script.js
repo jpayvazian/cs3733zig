@@ -7,7 +7,7 @@ window.onload = () => {
 		const alternativeNames = alternatives.alternativeNames
 		const alternativeDescriptions = alternatives.alternativeDescriptions
         console.log({description:inputs[0].value,numMembers:parseInt(inputs[1].value), alternativeNames, alternativeDescriptions})
-        fetch(url+'/createChoice', {
+        fetch(url+'/choice', {
             method:'POST',
             body:JSON.stringify({description:inputs[0].value,numMembers:parseInt(inputs[1].value), alternativeNames, alternativeDescriptions})
         })
