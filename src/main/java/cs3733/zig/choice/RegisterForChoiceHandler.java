@@ -94,7 +94,7 @@ public class RegisterForChoiceHandler implements RequestHandler<RegisterForChoic
 		if (logger != null) logger.log("in loadListOfMembersFromRDS");
 		MembersDAO dao = new MembersDAO();
 		try {
-			List<String> rdsListOfMembers = dao.getListOfMembers(idChoice);
+			List<String> rdsListOfMembers = dao.getListOfMemberNames(idChoice);
 			if (logger != null) logger.log("NUMBER OF CURRENT MEMBERS: " + rdsListOfMembers.size());
 			return rdsListOfMembers;
 		} catch (Exception e) { //might not be a list of members (I THINK)

@@ -27,7 +27,7 @@ public class MembersDAO {
 	 * @return the list of members, or null if idChoice not valid
 	 * @throws Exception
 	 */
-	public List<String> getListOfMembers(String idChoice) throws Exception {
+	public List<String> getListOfMemberNames(String idChoice) throws Exception {
 		try {
 			List<String> listOfMembers = new ArrayList<>(); //TODO: make i equal to max, which we CAN GET
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
@@ -48,6 +48,29 @@ public class MembersDAO {
 		}
 		
 	}
+	
+	public List<Member> getListOfMembers(String idChoice) throws Exception {
+		try {
+			List<Member> listOfMembers = new ArrayList<>(); //TODO: make i equal to max, which we CAN GET
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
+            ps.setString(1,  idChoice);
+            ResultSet resultSet = ps.executeQuery();
+            
+            while (resultSet.next()) {
+                listOfMembers.add(new Member(resultSet.getString("memberName"), resultSet.getString("password")));
+            }
+                  
+            resultSet.close();
+            ps.close();
+            
+            return listOfMembers;
+		} catch (Exception e) {
+			//no list! since the code must havebeen valid, else we wouldn't be here...
+			return new ArrayList<Member>();
+		}
+		
+	}
+	
 	/**
 	 * Gets a specific member based on their name and choice that they signed up for, in the DAO
 	 * @param idChoice

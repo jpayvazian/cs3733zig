@@ -3,10 +3,12 @@ package cs3733.zig.choice.db;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.List;
 
 import cs3733.zig.choice.model.Alternative;
 
 import cs3733.zig.choice.model.Choice;
+import cs3733.zig.choice.model.Member;
 /**
  * Class for Choices D.A.O
  *
@@ -113,7 +115,6 @@ public class ChoicesDAO {
      * @return the choice found in the DAO, in Choice class form, or null if not found
      * @throws Exception
      */
-    //TODO: FIX THIS CRAP
 	public Choice getChoice(String idChoice) throws Exception {
 		try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
@@ -122,21 +123,18 @@ public class ChoicesDAO {
             Choice c = null;
             while (resultSet.next()) { 
             	Alternative[] alternatives = new AlternativesDAO().getAlternatives(idChoice);
-            	
-            	resultSet.getString("idChoice");
-            	resultSet.getTimestamp("startDate");
+            	List<Member> teamMembers = new MembersDAO().getListOfMembers(idChoice);
             	Timestamp endDate = null;
             	boolean isCompleted = false;
-            	Alternative completedAlt = null;
+            	Alternative choesnAlternative = null;
             	try {
             		endDate = resultSet.getTimestamp("completionDate");
             		isCompleted = true;
-            		completedAlt = new AlternativesDAO().getAlternative(resultSet.getString("chosenAlternative"));
+            		choesnAlternative = new AlternativesDAO().getAlternative(resultSet.getString("chosenAlternative"));
             	} catch (Exception e) {
             		endDate = null;
             	}
-            	//TODO: change constructor (first im testing)
-                c = new Choice(resultSet.getString("description"), alternatives, resultSet.getInt("maxMembers"));
+                c = new Choice(resultSet.getString("idChoice"), resultSet.getString("description"), alternatives, choesnAlternative, resultSet.getInt("maxMembers"), isCompleted, teamMembers, resultSet.getTimestamp("startDate"), endDate);
             }
             return c;
 		} catch (Exception e) {
