@@ -12,11 +12,11 @@ import java.util.UUID;
  *
  */
 public class Alternative {
-	final private String id;
-	final private String name;
-	final private String description;
-	final private List<Feedback> feedback;
-	final private Map<String, Rating> ratings;
+	private String id;
+	private String name;
+	private String description;
+	private List<Feedback> feedback;
+	private Map<String, Rating> ratings;
 	
 	/**
 	 * Constructor for Alternative
@@ -29,6 +29,11 @@ public class Alternative {
 		this.description = description;
 		this.feedback = new ArrayList<>();
 		this.ratings = new HashMap<>();
+	}
+	
+	//for JSON needs default constructor
+	public Alternative() {
+		
 	}
 	/**
 	 * IDEA:

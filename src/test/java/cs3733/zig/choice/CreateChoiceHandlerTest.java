@@ -25,14 +25,14 @@ public class CreateChoiceHandlerTest {
 		CreateChoiceRequest ccr = new CreateChoiceRequest();
 		ccr.setDescription("Where to eat");
 		ccr.setMaxMembers(3);
-		Alternative[] alts = new Alternative[5];
-		alts[0] = new Alternative("McDonalds", "Fast Food");
-		alts[1] = new Alternative("Panera", "Soup and Salad");
-		alts[2] = new Alternative("Home", "Cook something");
-		ccr.setAlternatives(alts);
+		String[] altNames =  {"McDonalds", "Panera", "Home"};
+		String[] altDescriptions = {"Fast Food", "Soup and Salad", "Cooking"};
+
+		ccr.setAlternativeNames(altNames);
+		ccr.setAlternativeDescriptions(altDescriptions);
 		assertEquals(ccr.description, "Where to eat");
 		assertEquals(ccr.maxMembers, 3);
-		assertEquals(ccr.alternatives[1].getName(), "Panera");
+		assertEquals(ccr.alternativeNames[1], "Panera");
 	}
 	
 	@Test
@@ -72,12 +72,10 @@ public class CreateChoiceHandlerTest {
 
 	@Test
 	public void testCreateChoice() {	
-		Alternative[] alts = new Alternative[5];
-		alts[0] = new Alternative("Video Games", "Among Us");
-		alts[1] = new Alternative("Board Games", "Catan");
-		alts[2] = new Alternative("Jogging", "5k around elm park");
+		String[] altNames =  {"McDonalds", "Panera", "Home"};
+		String[] altDescriptions = {"Fast Food", "Soup and Salad", "Cooking"};
 		
-    	CreateChoiceRequest ccr = new CreateChoiceRequest("Weekend Plans", 4, alts);
+    	CreateChoiceRequest ccr = new CreateChoiceRequest("Where to eat", 8, altNames, altDescriptions);
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {

@@ -17,12 +17,19 @@ public class CreateChoiceHandler implements RequestHandler<CreateChoiceRequest, 
 	
 	LambdaLogger logger;
 
-	public String createChoice(String description, int maxMembers, Alternative[] alternatives) throws Exception {
+	public String createChoice(String description, int maxMembers, String[] alternativeNames, String[] alternativeDescriptions) throws Exception {
 		if (logger != null) { logger.log("in createChoice"); }
 		ChoicesDAO dao = new ChoicesDAO();
 		
 			java.util.Date date = new java.util.Date();
 			Timestamp startDate = new Timestamp(date.getTime());
+			
+			Alternative[] alternatives = new Alternative[5];
+			int numAlt = alternativeNames.length;
+			for(int i = 0; i < numAlt; i++) {
+				alternatives[i] = new Alternative(alternativeNames[i], alternativeDescriptions[i]); 
+			}
+			
 			Choice choice = new Choice(description, alternatives, maxMembers, startDate);
 	
 			boolean create = dao.createChoice(choice);
@@ -38,7 +45,7 @@ public class CreateChoiceHandler implements RequestHandler<CreateChoiceRequest, 
 		
 		CreateChoiceResponse response;
 		try {
-			String idChoice = createChoice(req.description, req.maxMembers, req.alternatives);
+			String idChoice = createChoice(req.description, req.maxMembers, req.alternativeNames, req.alternativeDescriptions);
 			
 				if (idChoice != "") {
 					response = new CreateChoiceResponse(idChoice);
