@@ -42,6 +42,33 @@ paths:
             type: string
         400:
           description: "400 response: Invalid input or maxMembers reached"
+<<<<<<< HEAD
+=======
+  /choice:
+    post:
+      tags:
+      - members
+      operationId: createChoice
+      description: Requests to create a choice, returns back choice id
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: ChoiceRequest
+        required: true
+        schema:
+          $ref: '#/definitions/ChoiceRequest'
+      responses:
+        200:
+          description: "200 response: Choice created"
+          schema:
+            type: string
+        400:
+          description: "400 response: Invalid input"
+    
+>>>>>>> 9b1889128f3887c854ca45af652c918969d67dfb
   /choice/{idChoice}:
     get:
       tags:
@@ -70,21 +97,23 @@ definitions:
     required:
     - description
     - numMembers
-    - alternatives
+    - alternativeNames
+    - alternativeDescriptions
     properties:
       description:
         type: string
       numMembers:
         type: integer
-      alternatives:
+      alternativeNames:
         type: array
         items:
-          type: object
-          properties:
-            name:
-              type: string
-            description: 
-              type: string
+          type: string
+        minItems: 2
+        maxItems: 5
+      alternativeDescriptions:
+        type: array
+        items:
+          type: string
         minItems: 2
         maxItems: 5
   Choice:
