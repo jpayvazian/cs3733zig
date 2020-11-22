@@ -33,10 +33,8 @@ public class AlternativesDAO {
             ResultSet resultSet = ps.executeQuery();
             int i=0;
             while(resultSet.next()) {
-            	//FOR NOW, DO NOT WORRY ABOUT ADDING FEEDBACK
-            	//I WILL WORRY ABOUT FEEDBACK VERY SOON
-            	//WHICH WILL REQUIRE STUFF LIKE CONSTRUCTOR CHANGING
-            	alternatives[i++] = new Alternative(resultSet.getString("name"), resultSet.getString("description"));
+            	//TODO: add feedback and rating stuff (via null)
+            	alternatives[i++] = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, null);
             }
             return alternatives;
 		} catch (Exception e) {
@@ -75,6 +73,26 @@ public class AlternativesDAO {
         } catch (Exception e) {
             throw new Exception("Failed to create Alternatives: " + e.getMessage());
         }
-    } 
+    }
+	/**
+	 * Grabs a specific alternative based on id
+	 * @param string
+	 * @return the alternatve, or null if not found
+	 */
+	public Alternative getAlternative(String idAlternative) {
+		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idAlternative = ?;");
+            ps.setString(1, idAlternative);
+            ResultSet resultSet = ps.executeQuery();
+            Alternative alt = null;
+            while (resultSet.next()) {
+            	//null #1 is for List<Feedback>, #2 is for Map<String, Rating>
+                alt = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, null);
+            }
+            return alt;
+		} catch (Exception e) {
+			return null;
+		}
+	} 
 
 }

@@ -13,7 +13,12 @@ import cs3733.zig.choice.db.MembersDAO;
 import cs3733.zig.choice.http.RegisterForChoiceRequest;
 import cs3733.zig.choice.http.RegisterForChoiceResponse;
 import cs3733.zig.choice.model.Member;
-
+/**
+ * 
+ * Realizes the use case of a user registering for a choice (or logging in)
+ * Invoked on POST request /registerForChoice
+ *
+ */
 public class RegisterForChoiceHandler implements RequestHandler<RegisterForChoiceRequest,RegisterForChoiceResponse>{
 	
 	LambdaLogger logger;

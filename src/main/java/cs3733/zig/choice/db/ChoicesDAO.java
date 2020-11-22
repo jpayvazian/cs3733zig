@@ -120,12 +120,22 @@ public class ChoicesDAO {
             ps.setString(1,  idChoice);
             ResultSet resultSet = ps.executeQuery();
             Choice c = null;
-            //ERRORS IN WHILE LOOP!
             while (resultSet.next()) { 
-            	Alternative[] alternatives = new AlternativesDAO().getAlternatives(idChoice); //TODO: make alternatives DAO
-            	//TODO: figure out date shit. see if Jack has this done before i do it!
-            	//Timestamp ts = resultSet.getTimestamp("startDate");
-            	Timestamp ts = null; //THIS IS BECAUSE ABOVE CAUSES THINGS TO CRASH
+            	Alternative[] alternatives = new AlternativesDAO().getAlternatives(idChoice);
+            	
+            	resultSet.getString("idChoice");
+            	resultSet.getTimestamp("startDate");
+            	Timestamp endDate = null;
+            	boolean isCompleted = false;
+            	Alternative completedAlt = null;
+            	try {
+            		endDate = resultSet.getTimestamp("completionDate");
+            		isCompleted = true;
+            		completedAlt = new AlternativesDAO().getAlternative(resultSet.getString("chosenAlternative"));
+            	} catch (Exception e) {
+            		endDate = null;
+            	}
+            	//TODO: change constructor (first im testing)
                 c = new Choice(resultSet.getString("description"), alternatives, resultSet.getInt("maxMembers"));
             }
             return c;

@@ -10,12 +10,25 @@ import cs3733.zig.choice.http.CreateChoiceResponse;
 import cs3733.zig.choice.model.Alternative;
 import cs3733.zig.choice.model.Choice;
 
-
+/**
+ * Realizes the use case of creating a choice
+ * Invoked on POST request /choice
+ *
+ */
 public class CreateChoiceHandler implements RequestHandler<CreateChoiceRequest, CreateChoiceResponse> {
 	
 	LambdaLogger logger;
 
-	public String createChoice(String description, int maxMembers, String[] alternativeNames, String[] alternativeDescriptions) throws Exception {
+	/**
+	 * Creates a choice
+	 * @param description
+	 * @param maxMembers
+	 * @param alternativeNames
+	 * @param alternativeDescriptions
+	 * @return
+	 * @throws Exception
+	 */
+	private String createChoice(String description, int maxMembers, String[] alternativeNames, String[] alternativeDescriptions) throws Exception {
 		if (logger != null) logger.log("in createChoice");
 		ChoicesDAO dao = new ChoicesDAO();
 			Alternative[] alternatives = new Alternative[5];
