@@ -2,6 +2,10 @@ package cs3733.zig.choice.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Date;
+
+import cs3733.zig.choice.model.Alternative;
+import cs3733.zig.choice.model.Choice;
 
 public class ChoicesDAO {
 	
@@ -59,6 +63,23 @@ public class ChoicesDAO {
 		} catch (Exception e) {
 			//if this errors we are in deep trouble
 			return -1;
+		}
+	}
+
+	public Choice getChoice(String idChoice) {
+		try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
+            ps.setString(1,  idChoice);
+            ResultSet resultSet = ps.executeQuery();
+            Choice c = null;
+            while (resultSet.next()) {
+            	Alternative[] alternatives; //TODO: make alternatives DAO
+            	//TODO: figure out date shit. see if Jack has this done before i do it!
+                c = new Choice(resultSet.getString("description"), alternatives, resultSet.getInt("maxMembers"), new Date());
+            }
+            return c;
+		} catch (Exception e) {
+			return null;
 		}
 	}
 }

@@ -17,6 +17,7 @@ public class RegisterForChoiceResponse {
 		this.error = errorMessage;
 	}
 	
+	@Override
 	public String toString() {
 		if (statusCode / 100 == 2) {  // too cute?
 			return "Result(" + this.idChoice + " has gained a new member/returning member)";
