@@ -2,6 +2,7 @@ package cs3733.zig.choice.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.sql.Date;
 
 import cs3733.zig.choice.model.Alternative;
@@ -20,12 +21,12 @@ public class ChoicesDAO {
     	}
     }
 
-    public String getCode(String name) throws Exception {
+    public String getCode(String idChoice) throws Exception {
         
         try {
             String code = null;
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
-            ps.setString(1,  name);
+            ps.setString(1,  idChoice);
             ResultSet resultSet = ps.executeQuery();
             
             while (resultSet.next()) {
@@ -66,20 +67,23 @@ public class ChoicesDAO {
 		}
 	}
 
-	public Choice getChoice(String idChoice) {
+	public Choice getChoice(String idChoice) throws Exception {
 		try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
             ps.setString(1,  idChoice);
             ResultSet resultSet = ps.executeQuery();
             Choice c = null;
-            while (resultSet.next()) {
-            	Alternative[] alternatives; //TODO: make alternatives DAO
+            //ERRORS IN WHILE LOOP!
+            while (resultSet.next()) { 
+            	Alternative[] alternatives = new AlternativesDAO().getAlternatives(idChoice); //TODO: make alternatives DAO
             	//TODO: figure out date shit. see if Jack has this done before i do it!
-                c = new Choice(resultSet.getString("description"), alternatives, resultSet.getInt("maxMembers"), new Date());
+            	//Timestamp ts = resultSet.getTimestamp("startDate");
+            	Timestamp ts = null; //THIS IS BECAUSE ABOVE CAUSES THINGS TO CRASH
+                c = new Choice(resultSet.getString("description"), alternatives, resultSet.getInt("maxMembers"), ts);
             }
             return c;
 		} catch (Exception e) {
-			return null;
+			throw new Exception("Choice was not gotten properly");
 		}
 	}
 }

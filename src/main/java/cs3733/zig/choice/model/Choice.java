@@ -37,7 +37,15 @@ public class Choice {
 		this.startDate = startDate;
 		this.setCompletionDate(null);
 	}
-
+	//DELET MEs
+	public Choice() {
+		this.id = "";
+		this.description = "";
+		this.alternatives = null;
+		this.maximumMembers = 0;
+		this.teamMember = null;
+		this.startDate = null; }
+	
 	/**
 	 * 
 	 * @param alt

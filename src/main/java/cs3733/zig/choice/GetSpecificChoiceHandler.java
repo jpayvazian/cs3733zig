@@ -9,7 +9,7 @@ import cs3733.zig.choice.http.GetSpecificChoiceRequest;
 import cs3733.zig.choice.http.GetSpecificChoiceResponse;
 import cs3733.zig.choice.model.Choice;
 
-
+//since this is a GET, response should be Object I THINK
 public class GetSpecificChoiceHandler implements RequestHandler<GetSpecificChoiceRequest,GetSpecificChoiceResponse>{
 
 	LambdaLogger logger;
@@ -21,7 +21,7 @@ public class GetSpecificChoiceHandler implements RequestHandler<GetSpecificChoic
 		logger.log(input.toString());
 		Choice theChoice = getChoice(input.getIdChoice());
 		if(theChoice==null)
-			return new GetSpecificChoiceResponse(400, "Choice not found/loaded properly!");
+			return new GetSpecificChoiceResponse(400, "Choice not found/loaded properly! code recorded: " + input.getIdChoice());
 		else
 			return new GetSpecificChoiceResponse(200, theChoice);
 	}
@@ -33,7 +33,13 @@ public class GetSpecificChoiceHandler implements RequestHandler<GetSpecificChoic
 	private Choice getChoiceFromRDS(String idChoice) {
 		if (logger!=null) logger.log("in getChoiceFromRDS");
 		ChoicesDAO dao = new ChoicesDAO();
-		Choice c = dao.getChoice(idChoice);
-		return c;
+		Choice c;
+		try {
+			c = dao.getChoice(idChoice);
+			return c;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }
