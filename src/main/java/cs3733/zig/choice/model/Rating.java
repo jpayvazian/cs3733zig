@@ -1,7 +1,7 @@
 package cs3733.zig.choice.model;
 /**
  * 
- * @author Luke (Zig)
+ * An enum for Ratings. (could move this into alternative??)
  *
  */
 public enum Rating {

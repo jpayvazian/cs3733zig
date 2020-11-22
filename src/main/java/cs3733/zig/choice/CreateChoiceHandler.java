@@ -1,7 +1,5 @@
 package cs3733.zig.choice;
 
-import java.sql.Timestamp;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -20,17 +18,13 @@ public class CreateChoiceHandler implements RequestHandler<CreateChoiceRequest, 
 	public String createChoice(String description, int maxMembers, String[] alternativeNames, String[] alternativeDescriptions) throws Exception {
 		if (logger != null) logger.log("in createChoice");
 		ChoicesDAO dao = new ChoicesDAO();
-		
-			java.util.Date date = new java.util.Date();
-			Timestamp startDate = new Timestamp(date.getTime());
-			
 			Alternative[] alternatives = new Alternative[5];
 			int numAlt = alternativeNames.length;
 			for(int i = 0; i < numAlt; i++) {
 				alternatives[i] = new Alternative(alternativeNames[i], alternativeDescriptions[i]); 
 			}
 			
-			Choice choice = new Choice(description, alternatives, maxMembers, startDate);
+			Choice choice = new Choice(description, alternatives, maxMembers);
 			if(logger!=null) logger.log("CHOICE: " + choice.toString());
 			boolean create = dao.createChoice(choice);
 			if(create) { return choice.getId(); }

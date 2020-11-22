@@ -6,45 +6,64 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 /**
+ * 
  * Class for choices
- * @author Luke (Zig)
  *
  */
 public class Choice {
-	final private String id;
-	final private String description;
-	final private Alternative[] alternatives;
+	private String id;
+	private String description;
+	private Alternative[] alternatives;
 	private Alternative chosenAlternative;
-	final private int maximumMembers;
+	private int maximumMembers;
 	private boolean isCompleted;
-	final private List<Member> teamMember;
-	final private Timestamp startDate;
+	private List<Member> teamMembers;
+	private Timestamp startDate;
 	private Timestamp completionDate;
+	
 	/**
-	 * Constructor for a choice
+	 * Constructor for creating a Choice for the first time
 	 * @param description
 	 * @param alternatives
 	 * @param maximumMembers
 	 */
-	public Choice(String description, Alternative[] alternatives, int maximumMembers, Timestamp startDate) {
+	public Choice(String description, Alternative[] alternatives, int maximumMembers) {
 		this.id = UUID.randomUUID().toString();
 		this.description = description;
 		this.alternatives = alternatives;
 		this.setChosenAlternative(null);
 		this.maximumMembers = maximumMembers;
 		this.setCompleted(false);
-		this.teamMember = new ArrayList<>();
-		this.startDate = startDate;
+		this.teamMembers = new ArrayList<>();
+		this.startDate = new Timestamp(new java.util.Date().getTime());
 		this.setCompletionDate(null);
 	}
-	//DELET MEs
-	public Choice() {
-		this.id = "";
-		this.description = "";
-		this.alternatives = null;
-		this.maximumMembers = 0;
-		this.teamMember = null;
-		this.startDate = null; }
+	/**
+	 * Constructor for loading a Choice that exists in the DAO
+	 * @param id
+	 * @param description
+	 * @param alternatives
+	 * @param chosenAlternative
+	 * @param maximumMembers
+	 * @param isCompleted
+	 * @param teamMembers
+	 * @param startDate
+	 * @param completionDate
+	 */
+	public Choice(String id, String description, Alternative[] alternatives, Alternative chosenAlternative, int maximumMembers, boolean isCompleted, List<Member> teamMembers, Timestamp startDate, Timestamp completionDate) {
+		this.id = id;
+		this.description = description;
+		this.alternatives = alternatives;
+		this.chosenAlternative = chosenAlternative;
+		this.maximumMembers = maximumMembers;
+		this.isCompleted = isCompleted;
+		this.teamMembers = teamMembers;
+		this.startDate = startDate;
+		this.completionDate = completionDate;
+	}
+	
+	//empty constructor, just in case
+	public Choice() {}
 	
 	/**
 	 * 
@@ -101,7 +120,7 @@ public class Choice {
 	}
 
 	public List<Member> getTeamMember() {
-		return teamMember;
+		return teamMembers;
 	}
 	
 	public Timestamp getStartDate() {

@@ -1,32 +1,47 @@
 package cs3733.zig.choice.model;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 /**
  * 
- * @author Luke (Zig)
+ * Class for Feedback
  *
  */
 public class Feedback {
-	final private Date timestamp; //might change to a different type!
-	final private String memberName;
-	final private String contents;
+	private Timestamp timestamp; //might change to a different type!
+	private String memberName;
+	private String contents;
 	
 	/**
-	 * Constructor for Feedback
+	 * Constructor for creating a feedback for the first time
 	 * @param memberName
 	 * @param content
 	 */
 	public Feedback(String memberName, String contents) {
-		this.timestamp = new Date();
+		this.timestamp = new Timestamp(new java.util.Date().getTime());
 		this.memberName = memberName;
 		this.contents = contents;
 	}
+	/**
+	 * Constructor for loading a Feedback that exists in the DAO
+	 * @param memberName
+	 * @param contents
+	 * @param timestamp
+	 */
+	public Feedback(String memberName, String contents, Timestamp timestamp) {
+		this.memberName = memberName;
+		this.contents = contents;
+		this.timestamp = timestamp;
+	}
+	
+	// empty constructor, just in case
+	public Feedback() { }
+	
 	/*
 	 * below are getters and setters:
 	 */
 	
-	public Date getTimestamp() {
+	public Timestamp getTimestamp() {
 		return timestamp;
 	}
 

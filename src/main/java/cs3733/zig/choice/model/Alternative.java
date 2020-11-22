@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 /**
  * 
- * @author Luke (zig)
+ * Alternative class. Part of the model.
  *
  */
 public class Alternative {
@@ -19,7 +19,7 @@ public class Alternative {
 	private Map<String, Rating> ratings;
 	
 	/**
-	 * Constructor for Alternative
+	 * Constructor for creating an Alternative for the first time
 	 * @param name
 	 * @param description
 	 */
@@ -30,17 +30,25 @@ public class Alternative {
 		this.feedback = new ArrayList<>();
 		this.ratings = new HashMap<>();
 	}
+	/**
+	 * Constructor for loading an Alternative that exists in the DAO
+	 * @param id
+	 * @param name
+	 * @param description
+	 * @param feedback
+	 * @param ratings
+	 */
+	public Alternative(String id, String name, String description, List<Feedback> feedback, Map<String, Rating> ratings) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.feedback = feedback;
+		this.ratings = ratings;
+	}
+	
 	
 	//for JSON needs default constructor
-	public Alternative() {
-		
-	}
-	/**
-	 * IDEA:
-	 * what if... what if... we had a hashMap
-	 * where the key was the member, the value was a boolean. true if approve, false if not approve
-	 * 
-	 */
+	public Alternative() { }
 	
 	/**
 	 * 

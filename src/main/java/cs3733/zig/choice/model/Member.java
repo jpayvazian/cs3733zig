@@ -1,16 +1,16 @@
 package cs3733.zig.choice.model;
 
-import java.util.Optional;
 /**
+ * 
  * Member class
- * @author Luke (Zig)
  *
  */
 public class Member {
 	final private String name;
 	final private String password;
+	
 	/**
-	 * Constructor for Member
+	 * Constructor for Member (regardless if they are created for the first time or not)
 	 * @param name
 	 * @param string
 	 */

@@ -113,6 +113,7 @@ public class ChoicesDAO {
      * @return the choice found in the DAO, in Choice class form, or null if not found
      * @throws Exception
      */
+    //TODO: FIX THIS CRAP
 	public Choice getChoice(String idChoice) throws Exception {
 		try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
@@ -125,7 +126,7 @@ public class ChoicesDAO {
             	//TODO: figure out date shit. see if Jack has this done before i do it!
             	//Timestamp ts = resultSet.getTimestamp("startDate");
             	Timestamp ts = null; //THIS IS BECAUSE ABOVE CAUSES THINGS TO CRASH
-                c = new Choice(resultSet.getString("description"), alternatives, resultSet.getInt("maxMembers"), ts);
+                c = new Choice(resultSet.getString("description"), alternatives, resultSet.getInt("maxMembers"));
             }
             return c;
 		} catch (Exception e) {
