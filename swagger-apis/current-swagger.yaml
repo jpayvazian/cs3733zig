@@ -42,8 +42,6 @@ paths:
             type: string
         400:
           description: "400 response: Invalid input or maxMembers reached"
-<<<<<<< HEAD
-=======
   /choice:
     post:
       tags:
@@ -67,8 +65,6 @@ paths:
             type: string
         400:
           description: "400 response: Invalid input"
-    
->>>>>>> 9b1889128f3887c854ca45af652c918969d67dfb
   /choice/{idChoice}:
     get:
       tags:

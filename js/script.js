@@ -14,6 +14,7 @@ window.onload = () => {
         .then( response => response.json())
         .then(json=> {
             console.log(json)
+			document.querySelector('#showidChoice').innerText = "YOUR CHOICE: " + json.idChoice
             //this is where we can let the client know if there are errors.
             //if there are not errors, we let client know the choice id!
         })

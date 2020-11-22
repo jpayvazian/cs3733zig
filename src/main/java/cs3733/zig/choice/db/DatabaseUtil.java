@@ -2,7 +2,10 @@ package cs3733.zig.choice.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-
+/**
+ * Class for connecting to the Database
+ *
+ */
 public class DatabaseUtil {
 
 	// DB user names and passwords (as well as the db endpoint) should never be stored directly in code.

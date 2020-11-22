@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 import cs3733.zig.choice.model.Member;
-
+/**
+ * Class for Members D.A.O
+ *
+ */
 public class MembersDAO {
 	private java.sql.Connection conn;
 	final private String tableName = "Members";
@@ -18,7 +21,12 @@ public class MembersDAO {
     		this.conn = null;
     	}
 	}
-	
+	/**
+	 * Grabs a list of members from the same choice, via the DAO
+	 * @param idChoice
+	 * @return the list of members, or null if idChoice not valid
+	 * @throws Exception
+	 */
 	public List<String> getListOfMembers(String idChoice) throws Exception {
 		try {
 			List<String> listOfMembers = new ArrayList<>(); //TODO: make i equal to max, which we CAN GET
@@ -40,7 +48,12 @@ public class MembersDAO {
 		}
 		
 	}
-	
+	/**
+	 * Gets a specific member based on their name and choice that they signed up for, in the DAO
+	 * @param idChoice
+	 * @param memberName
+	 * @return the member if found (as an object), or null if member does not exist
+	 */
 	public Member getMember(String idChoice, String memberName) {
 		try {
             PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
@@ -62,7 +75,13 @@ public class MembersDAO {
 			return null;
 		}
 	}
-
+	/**
+	 * Creates a member entry into the DAO
+	 * @param idChoice
+	 * @param memberName
+	 * @param password
+	 * @throws Exception
+	 */
 	public void createMember(String idChoice, String memberName, String password) throws Exception {
 		try {
 			PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tableName + " VALUES (?, ?, ?, ?);");
