@@ -13,7 +13,6 @@ import com.google.gson.Gson;
 
 import cs3733.zig.choice.http.CreateChoiceRequest;
 import cs3733.zig.choice.http.CreateChoiceResponse;
-import cs3733.zig.choice.model.Alternative;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.

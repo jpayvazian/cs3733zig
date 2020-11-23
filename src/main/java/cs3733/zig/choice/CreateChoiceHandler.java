@@ -52,7 +52,7 @@ public class CreateChoiceHandler implements RequestHandler<CreateChoiceRequest, 
 		
 		CreateChoiceResponse response;
 		try {
-			String idChoice = createChoice(req.description, req.numMembers, req.alternativeNames, req.alternativeDescriptions);
+			String idChoice = createChoice(req.description, req.maxMembers, req.alternativeNames, req.alternativeDescriptions);
 			
 				if (idChoice != "") {
 					response = new CreateChoiceResponse(idChoice);
