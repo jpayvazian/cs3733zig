@@ -26,18 +26,63 @@ window.onload = () => {
 		}		
 	})
 }
-
+function changeRating(self, strNum, otherInt) {
+        const strs = ["up", "down"]
+        if(self.childNodes[0].src.includes('blue')) {
+            self.childNodes[0].src=`/img/${strs[strNum]}.png`
+        } else {
+            self.childNodes[0].src=`/img/blue${strs[strNum]}.png`
+        }
+        document.querySelectorAll(`.${strs[Math.abs(strNum-1)]}-rating`)[otherInt].src=`/img/${strs[Math.abs(strNum-1)]}.png`
+        //in here, also make sure that it deselects the other one!
+    }
 function createCarousel(aNames, aDescrips, num) {
     const cindicators = document.querySelectorAll('.cli')
     const cinners = document.querySelectorAll('.carousel-item')
     for(let i=0; i<num; i++) {
-        const h1 = document.createElement('h1')
-        h1.innerText=aNames[i]
-        const h4 = document.createElement('h4')
-        h4.innerText=aDescrips[i]
-        cinners[i].append(h1)
-        cinners[i].append(h4)
-    }
+            const h1 = document.createElement('h1')
+            h1.innerText=aNames[i]
+            const h4 = document.createElement('h4')
+            h4.innerText=aDescrips[i]            
+            const approval = document.createElement('img')
+            approval.setAttribute('src', '/img/up.png')
+            approval.setAttribute('class', 'ratingImg up-rating')
+            const disapproval = document.createElement('img')
+            disapproval.setAttribute('src', '/img/down.png')
+            disapproval.setAttribute('class', 'ratingImg down-rating')
+            const approvalA = document.createElement('a')
+            approvalA.setAttribute('onclick', 'changeRating(this, 0, ' + i + ')')
+            approvalA.append(approval)
+            const disapprovalA = document.createElement('a')
+            disapprovalA.setAttribute('onclick', 'changeRating(this, 1, ' + i +')')
+            disapprovalA.append(disapproval)
+            const approvalcount = document.createElement('h5')
+            approvalcount.innerText = "0"
+            const disapprovalcount = document.createElement('h5')
+            disapprovalcount.innerText = "0"
+            const approvalMemberList = document.createElement('h4') //THIS WILL BE A COLLAPSABLE ELEMENT
+            approvalMemberList.innerText = "list of approval members"
+            const disapprovalMemberList = document.createElement('h4') //THIS WILL BE A COLLAPSABLE ELEMENT
+            disapprovalMemberList.innerText = "list of disapproval members"
+            const divrow = document.createElement('div')
+            divrow.setAttribute('class', 'row')
+            const divcol1 = document.createElement('div')
+            divcol1.setAttribute('class', 'col-sm-6')
+            divcol1.append(approvalA)
+            divcol1.append(approvalcount)
+            divcol1.append (approvalMemberList)
+            divrow.append(divcol1)
+            const divcol2 = document.createElement('div')
+            divcol2.setAttribute('class', 'col-sm-6')
+            divcol2.append(disapprovalA)
+            divcol2.append(disapprovalcount)
+            divcol2.append(disapprovalMemberList)
+            divrow.append(divcol2)
+            cinners[i].append(h1)
+            cinners[i].append(h4)
+            cinners[i].append(divrow)
+
+        }
     for(let i=num; i<5; i++) {
         cindicators[i].remove()
         cinners[i].remove()
