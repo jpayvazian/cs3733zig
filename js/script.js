@@ -14,7 +14,8 @@ window.onload = () => {
         .then( response => response.json())
         .then(json=> {
             console.log(json)
-			document.querySelector('#showidChoice').innerText = "YOUR CHOICE: " + json.idChoice
+			if(json.statusCode==400) alert("Internal server error!")
+			else document.querySelector('#showidChoice').innerText = "YOUR CHOICE: " + json.idChoice
             //this is where we can let the client know if there are errors.
             //if there are not errors, we let client know the choice id!
         })
@@ -31,7 +32,6 @@ window.onload = () => {
     })
     document.querySelector('#registerchoice').onclick = e => {
         e.preventDefault()
-        //window.location.href = 'choice.html?c='+document.querySelector('#choicecode').value
         const inputs = document.querySelectorAll('.registerField')
         //NOTE: this should serve as both a log in and a sign up
         //basically, if user does not exist, we create one
@@ -47,7 +47,11 @@ window.onload = () => {
         .then(json=> {
 			if(json.statusCode==200) {
 				window.location.href='choice.html?idchoice='+json.idChoice
-			} else console.log("ERROR")
+			} else {
+				console.log("ERROR")
+				if(json.error!=null) alert(json.error)
+				else alert("Internal server error!")
+			}
             //this is where we can let the client know if there are errors.
             //if there are not errors, we redirect client to choice page
         })
