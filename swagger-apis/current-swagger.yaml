@@ -92,13 +92,13 @@ definitions:
     type: object
     required:
     - description
-    - numMembers
+    - maxMembers
     - alternativeNames
     - alternativeDescriptions
     properties:
       description:
         type: string
-      numMembers:
+      maxMembers:
         type: integer
       alternativeNames:
         type: array
