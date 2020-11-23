@@ -10,19 +10,36 @@ window.onload = () => {
 		console.log(json)
 		if(json.statusCode==200) {
 			document.querySelector('#choicedescription').innerText = json.choice.description
+			const aNames = []
+			const aDescrips = []
+			let number = 0
 			for(const alt in json.choice.alternatives) { //is this right syntax?
-				const altEle = document.createElement('div')
-				const h2 = document.createElement('h2')
-				h2.innerText = json.choice.alternatives[alt].name
-				altEle.append(h2)
-				const h3 = document.createElement('h3')
-				h3.innerText = json.choice.alternatives[alt].description
-				altEle.append(h3)
-				//FOR NOW, we don't need to worry about feedback/rating. let's just try and get this done first :)
-				document.querySelector('#alternatives').append(altEle)
+				if(json.choice.alternatives[alt]==null) break
+				aNames.push(json.choice.alternatives[alt].name)
+				aDescrips.push(json.choice.alternatives[alt].description)
+				number += 1
 			}
+			createCarousel(aNames, aDescrips, number)
+			document.querySelector('#code').innerText = json.choice.id
 		} else {
 			console.log("ERROR")
 		}		
 	})
+}
+
+function createCarousel(aNames, aDescrips, num) {
+    const cindicators = document.querySelectorAll('.cli')
+    const cinners = document.querySelectorAll('.carousel-item')
+    for(let i=0; i<num; i++) {
+        const h1 = document.createElement('h1')
+        h1.innerText=aNames[i]
+        const h4 = document.createElement('h4')
+        h4.innerText=aDescrips[i]
+        cinners[i].append(h1)
+        cinners[i].append(h4)
+    }
+    for(let i=num; i<5; i++) {
+        cindicators[i].remove()
+        cinners[i].remove()
+    }
 }

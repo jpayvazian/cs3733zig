@@ -7,6 +7,16 @@
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    	<style>
+			.carousel{
+			    background: #aaaaaa;
+			    margin-top: 20px;
+			}
+			.carousel-item{
+			    text-align: center;
+			    min-height: 280px; /* Prevent carousel from being distorted if for some reason image doesn't load */
+			}
+		</style>
     </head>
     <body>
         <div class="container">
@@ -19,8 +29,42 @@
             <br>
             <h2>Alternatives:</h2>
             <div id="alternatives">
-                <!--to be populated via GET request!-->
+               <div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+        <!-- Carousel indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active cli"></li>
+            <li data-target="#myCarousel" data-slide-to="1" class="cli"></li>
+            <li data-target="#myCarousel" data-slide-to="2" class="cli"></li>
+            <li data-target="#myCarousel" data-slide-to="3" class="cli"></li>
+            <li data-target="#myCarousel" data-slide-to="4" class="cli"></li>
+        </ol>
+        <!-- Wrapper for carousel items -->
+        <div class="carousel-inner">
+            <div class="carousel-item active">
             </div>
+            <div class="carousel-item">
+            </div>
+            <div class="carousel-item">
+            </div>
+            <div class="carousel-item">
+            </div>
+            <div class="carousel-item">
+            </div>
+        </div>
+        <!-- Carousel controls -->
+        <a class="carousel-control-prev" href="#myCarousel" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#myCarousel" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+            </div>
+            <br>
+            <br>
+            <hr>
+            <h6>Code:</h6>
+            <p id="code"></p>
         </div>
         <script src="/js/choicescript.js"></script>
     </body>
