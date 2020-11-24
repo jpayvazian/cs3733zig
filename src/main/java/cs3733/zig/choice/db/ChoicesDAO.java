@@ -1,8 +1,10 @@
 package cs3733.zig.choice.db;
 
 import java.sql.PreparedStatement;
+
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import cs3733.zig.choice.model.Alternative;
@@ -139,6 +141,25 @@ public class ChoicesDAO {
             return c;
 		} catch (Exception e) {
 			throw new Exception("Choice was not gotten properly");
+		}
+	}
+	public List<Choice> getListOfChoices() throws Exception{
+		List<Choice> list = new ArrayList<>();
+		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + ";");
+			ResultSet resultSet = ps.executeQuery();
+			
+			while (resultSet.next()) {
+                Choice c = getChoice(resultSet.getString("idChoice"));
+                list.add(c);
+            }
+            resultSet.close();
+            ps.close();
+            return list;
+            
+            
+		} catch (Exception e) {
+            throw new Exception("Failed in getting Choices: " + e.getMessage());
 		}
 	}
 }
