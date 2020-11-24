@@ -34,7 +34,7 @@ public class AlternativesDAO {
             int i=0;
             while(resultSet.next()) {
             	//TODO: add feedback and rating stuff (via null)
-            	alternatives[i++] = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, null);
+            	alternatives[i++] = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, null, null);
             }
             return alternatives;
 		} catch (Exception e) {
@@ -87,7 +87,7 @@ public class AlternativesDAO {
             Alternative alt = null;
             while (resultSet.next()) {
             	//null #1 is for List<Feedback>, #2 is for Map<String, Rating>
-                alt = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, null);
+                alt = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, null, null);
             }
             return alt;
 		} catch (Exception e) {

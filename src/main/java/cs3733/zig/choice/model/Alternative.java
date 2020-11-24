@@ -16,7 +16,8 @@ public class Alternative {
 	private String name;
 	private String description;
 	private List<Feedback> feedback;
-	private Map<String, Rating> ratings;
+	private ArrayList<String> approvers;
+	private ArrayList<String> disapprovers;
 	
 	/**
 	 * Constructor for creating an Alternative for the first time
@@ -28,7 +29,8 @@ public class Alternative {
 		this.name = name;
 		this.description = description;
 		this.feedback = new ArrayList<>();
-		this.ratings = new HashMap<>();
+		this.approvers = new ArrayList<String>();
+		this.disapprovers = new ArrayList<String>();
 	}
 	/**
 	 * Constructor for loading an Alternative that exists in the DAO
@@ -38,12 +40,13 @@ public class Alternative {
 	 * @param feedback
 	 * @param ratings
 	 */
-	public Alternative(String id, String name, String description, List<Feedback> feedback, Map<String, Rating> ratings) {
+	public Alternative(String id, String name, String description, List<Feedback> feedback, ArrayList<String> approvers, ArrayList<String> disapprovers) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.feedback = feedback;
-		this.ratings = ratings;
+		this.approvers = approvers;
+		this.disapprovers = disapprovers;
 	}
 	
 	
@@ -51,24 +54,39 @@ public class Alternative {
 	public Alternative() { }
 	
 	/**
-	 * 
-	 * @param rating
+	 * Adds a rater to list of either approves or disapproves
+	 * @param rating true if approve, false if disapprove
 	 * @param raterName
-	 * @return
-	 * @throws Exception
+	 * @return true if successful, can't have rater in same list twice or both lists simultaneously
 	 */
-	public boolean addRating(boolean rating, String raterName) throws Exception {
-		throw new Exception("Not implemented yet");
+	public boolean addRating(boolean rating, String raterName) {
+		if(rating && !approvers.contains(raterName)) {
+			approvers.add(raterName);
+				return true;
+		}
+		else if(!rating && !disapprovers.contains(raterName)) {
+				disapprovers.add(raterName);
+				return true;
+		}
+		return false; 
 	}
 	
 	/**
-	 * 
-	 * @param raterName
-	 * @return
+	 * Removes a rater name from list of approves or disapproves
+	 * @param rating true if approve, false if disapprove
+	 * @return raterName
 	 * @throws Exception
 	 */
-	public boolean removeRating(String raterName) throws Exception {
-		throw new Exception("Not implemented yet");
+	public boolean removeRating(String raterName) {
+		if(approvers.contains(raterName)) {
+			approvers.remove(raterName);
+				return true;
+		}
+		else if(disapprovers.contains(raterName)) {
+				disapprovers.remove(raterName);
+				return true;
+		}
+		return false; 
 	}
 	
 	/**
@@ -103,8 +121,12 @@ public class Alternative {
 		return feedback;
 	}
 
-	public Map<String, Rating> getRatings() {
-		return ratings;
+	public ArrayList<String> getApprovers() {
+		return approvers;
+	}
+	
+	public ArrayList<String> getDisapprovers() {
+		return disapprovers;
 	}
 	
 	public String getId() {

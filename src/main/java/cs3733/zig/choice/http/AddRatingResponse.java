@@ -1,15 +1,15 @@
 package cs3733.zig.choice.http;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class AddRatingResponse {
 	
-	public ArrayList<String> approvers;
-	public ArrayList<String> disapprovers;
+	public List<String> approvers;
+	public List<String> disapprovers;
 	public int httpCode;
 	public String error;
 	
-	public AddRatingResponse (ArrayList<String> approvers, ArrayList<String> disapprovers) {
+	public AddRatingResponse (List<String> approvers, List<String> disapprovers) {
 		this.approvers = approvers;
 		this.disapprovers = disapprovers;
 		this.httpCode = 200;
