@@ -23,7 +23,7 @@ public class AddRatingHandler implements RequestHandler<AddRatingRequest, AddRat
 	
     @Override
     public AddRatingResponse handleRequest(AddRatingRequest input, Context context) {
-        context.getLogger().log("Input: " + input);
+    	logger =  context.getLogger();
       	logger.log("Loading Java Lambda handler of AddRatingHandler");
 		logger.log(input.toString());
 		AddRatingResponse response;

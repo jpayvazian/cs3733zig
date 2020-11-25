@@ -60,18 +60,22 @@ public class RatingsDAO {
 	 * @param memberName
 	 * @param idAlternative
 	 * @param rating true if approve, false if disapprove
+	 * @return true if successful
 	 * @throws Exception
 	 */
-	public void addRating(String memberName, String idAlternative, boolean rating) throws Exception{
+	public boolean addRating(String memberName, String idAlternative, boolean rating) throws Exception{
 		try {
             PreparedStatement ps = conn.prepareStatement("INSERT INTO " + tableName + " VALUES (?, ?, ?, ?);");
-            ps.setString(1,  UUID.randomUUID().toString());
+            ps.setString(1, UUID.randomUUID().toString());
             ps.setString(2, idAlternative);
             ps.setString(3, memberName);
             ps.setBoolean(4, rating);
-            ps.executeQuery();
+            ps.execute();
+            ps.close();
+            return true;
 
         } catch (Exception e) {
+        	
         	e.printStackTrace();
             throw new Exception("Failed in adding rating: " + e.getMessage());
         }
@@ -112,14 +116,18 @@ public class RatingsDAO {
 	 * deletes a rating entry from the DAO
 	 * @param membername
 	 * @param idAlternative
+	 * @return true if successful
 	 * @throws Exception
 	 */
-	public void unselectRating(String memberName, String idAlternative) throws Exception{
+	public boolean unselectRating(String memberName, String idAlternative) throws Exception{
 		try {
             PreparedStatement ps = conn.prepareStatement("DELETE FROM " + tableName + " WHERE idAlternative=? AND memberName=?;");
             ps.setString(1, idAlternative);
             ps.setString(2, memberName);
-            ps.executeQuery();
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return (numAffected == 1);
 
         } catch (Exception e) {
         	e.printStackTrace();
@@ -132,15 +140,19 @@ public class RatingsDAO {
 	 * @param memberName
 	 * @param idAlternative
 	 * @param the new rating, true if approve, false if disapprove
+	 * @return true if successful
 	 * @throws Exception
 	 */
-	public void switchRating(String memberName, String idAlternative, boolean rating) throws Exception{
+	public boolean switchRating(String memberName, String idAlternative, boolean rating) throws Exception{
 		try {
             PreparedStatement ps = conn.prepareStatement("UPDATE " + tableName + " SET rating=? WHERE idAlternative=? AND memberName=?;");
             ps.setBoolean(1, rating);
             ps.setString(2, idAlternative);
             ps.setString(3, memberName);
-            ps.executeQuery();
+            int numAffected = ps.executeUpdate();
+            ps.close();
+            
+            return (numAffected == 1);
 
         } catch (Exception e) {
         	e.printStackTrace();

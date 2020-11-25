@@ -2,6 +2,7 @@ package cs3733.zig.choice.db;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 import cs3733.zig.choice.model.Alternative;
 import cs3733.zig.choice.model.Choice;
@@ -34,8 +35,12 @@ public class AlternativesDAO {
             int i=0;
             while(resultSet.next()) {
             	//TODO: add feedback and rating stuff (via null)
-            	alternatives[i++] = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, null, null);
+            	RatingsDAO rdao = new RatingsDAO();
+            	ArrayList<String> approvers = rdao.getRaters(resultSet.getString("idAlternative"), true);
+            	ArrayList<String> disapprovers = rdao.getRaters(resultSet.getString("idAlternative"), false);
+            	alternatives[i++] = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, approvers, disapprovers);
             }
+            ps.close();
             return alternatives;
 		} catch (Exception e) {
 			throw new Exception("Alternatives not found!");
@@ -55,6 +60,8 @@ public class AlternativesDAO {
             
             // id not unique (very unlikely)?
             while (resultSet.next()) {
+            	resultSet.close();
+            	ps.close();
                 return false;
             }
             
@@ -68,6 +75,7 @@ public class AlternativesDAO {
 					ps.execute();
 				}
 			}
+			ps.close();
             return true;
 
         } catch (Exception e) {
@@ -86,9 +94,15 @@ public class AlternativesDAO {
             ResultSet resultSet = ps.executeQuery();
             Alternative alt = null;
             while (resultSet.next()) {
-            	//null #1 is for List<Feedback>, #2 is for Map<String, Rating>
-                alt = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, null, null);
+            	//null #1 is for List<Feedback>, #2 is for ArrayList<String> approvers, #3 is for ArrayList<String> disapprovers
+            	RatingsDAO rdao = new RatingsDAO();
+            	ArrayList<String> approvers = rdao.getRaters(idAlternative, true);
+            	ArrayList<String> disapprovers = rdao.getRaters(idAlternative, false);
+            	
+                alt = new Alternative(resultSet.getString("idAlternative"), resultSet.getString("name"), resultSet.getString("description"), null, approvers, disapprovers);
             }
+            resultSet.close();
+            ps.close();
             return alt;
 		} catch (Exception e) {
 			return null;
