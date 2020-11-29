@@ -24,7 +24,7 @@ public class RequestChoiceResponse {
 	@Override
 	public String toString() {
 		if (statusCode / 100 == 2) {
-			return "Result(" + this.choices.toString() + " choice has been loaded)";
+			return "Result(" + this.choices.toString() + " choices have been loaded)";
 		} else {
 			return "ErrorResult(" + statusCode + ", err=" + error + ")";
 		}
