@@ -43,6 +43,20 @@ paths:
         400:
           description: "400 response: Invalid input or maxMembers reached"
   /choice:
+    get:
+      tags:
+      - admins
+      operationId: requestChoices
+      description: admin request for report of choices
+      produces:
+      - application/json
+      responses:
+        200:
+          description: "200 response: Choice report printed"
+          schema:
+            $ref: "#/definitions/ListOfChoices"
+        400:
+          description: "400 response: Invalid input"
     post:
       tags:
       - members
@@ -65,6 +79,7 @@ paths:
             type: string
         400:
           description: "400 response: Invalid input"
+    
   /choice/{idChoice}:
     get:
       tags:
@@ -84,6 +99,29 @@ paths:
           description: "200 response: Choice accessed"
           schema:
             $ref: '#/definitions/Choice'
+        400:
+          description: "400 response: Invalid input"
+  /addRating:
+    post:
+      tags:
+      - members
+      operationId: addRating
+      description: requests to approve/disapprove an alternative, output shows current list of approvers/disapprovers
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      parameters:
+      - in: body
+        name: RatingRequest
+        required: true
+        schema:
+          $ref: '#/definitions/RatingRequest'
+      responses:
+        200:
+          description: "200 response: Ratings updated"
+          schema:
+            $ref: '#/definitions/ListOfRaters'
         400:
           description: "400 response: Invalid input"
   
@@ -121,7 +159,6 @@ definitions:
     - members
     - alternatives
     - startDate
-    - completionDate
     - isCompleted
     properties:
       id:
@@ -149,6 +186,8 @@ definitions:
         format: date-time
       isCompleted:
         type: boolean
+      chosenAlternative:
+        $ref: '#/definitions/Alternative'
   ListOfChoices:
     type: array
     items:
@@ -160,8 +199,8 @@ definitions:
     - name
     - description
     - feedback
-    - approves
-    - disapproves
+    - approvers
+    - disapprovers
     properties:
       idAlternative:
         type: string
@@ -174,14 +213,14 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Feedback'
-      approves:
+      approvers:
         type: array
         items: 
-          $ref: "#/definitions/Member"
-      disapproves:
+          type: string
+      disapprovers:
         type: array
         items: 
-          $ref: "#/definitions/Member"
+          type: string
   FeedbackRequest:
     type: object
     required:
@@ -215,40 +254,18 @@ definitions:
       timestamp:
         type: string
         format: date-time
-  DisapproveRequest:
+  RatingRequest:
     type: object
     required:
+    - rating
+    - memberName
     - idAlternative
-    - idMember
     properties:
+      rating:
+        type: boolean
+      memberName:
+        type: string
       idAlternative:
-        type: string
-        format: uuid
-      idMember:
-        type: string
-        format: uuid
-  ApproveRequest:
-    type: object
-    required:
-    - idAlternative
-    - idMember
-    properties:
-      idAlternative:
-        type: string
-        format: uuid
-      idMember:
-        type: string
-        format: uuid
-  UnselectRatingRequest:
-    type: object
-    required:
-    - idAlternative
-    - idMember
-    properties:
-      idAlternative:
-        type: string
-        format: uuid
-      idMember:
         type: string
         format: uuid
   Credentials:
@@ -279,6 +296,20 @@ definitions:
       password:
         type: string
         format: password
+  ListOfRaters:
+    type: object
+    required:
+    - approvers
+    - disapprovers
+    properties:
+      approvers:
+        type: array
+        items:
+          type: string
+      disapprovers:
+        type: array
+        items:
+          type: string
 
 # Added by API Auto Mocking Plugin
 host: virtserver.swaggerhub.com
