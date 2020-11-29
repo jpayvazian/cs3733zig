@@ -2,7 +2,7 @@ const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha4'
 window.onload = () => {
     document.querySelector('#reportchoices').onclick = e=> {
         e.preventDefault()
-        const reportedChoices = document.querySelectorAll('.reportedchoices')
+        const reportedChoices = document.getElementById('listOfChoicesReport')
 	
         fetch(url+'/choice', {
             method:'GET'
@@ -15,8 +15,9 @@ window.onload = () => {
 			let output = ""
 			if(json.statusCode==200){
 				for(let i = 0; i<choices.length; i++){
-					output = output + "<h2>" + choices[i].id + "</h2><br>"
-					output = output + "DATE OF CREATION: " + choices[i].startDate + ", " + "COMPLETED: " + choices[i].completed + "<br>"
+					var date = new Date (choices[i].startDate);
+					output = output + "<h3>" + choices[i].id + ": " + "</h3><br>"
+					output = output + "DATE OF CREATION: " + date + ", " + "COMPLETED: " + choices[i].completed + "<hr>"
 				}
 				
 				reportedChoices.innerHTML = output
