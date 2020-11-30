@@ -18,6 +18,7 @@ window.onload = () => {
 					var date = new Date (choices[i].startDate);
 					output = output + "<h3>" + choices[i].id + ": " + "</h3><br>"
 					output = output + "DATE OF CREATION: " + date + ", " + "COMPLETED: " + choices[i].completed + "<hr>"
+					output = "<div class=\"choiceElement\">" + output +  "</div>"
 				}
 				
 				reportedChoices.innerHTML = output
