@@ -1,4 +1,4 @@
-const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha3' //modify when we change API
+const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha4' //modify when we change API
 window.onload = () => {
 	const idChoice = window.location.search.substring(window.location.search.indexOf("?idchoice=")+10, window.location.search.indexOf("?idchoice=")+46);
 	console.log(idChoice);
@@ -13,6 +13,7 @@ window.onload = () => {
 			const aNames = []
 			const aDescrips = []
 			const aIds = []
+			//TODO: add support for feedback.
 			let number = 0
 			for(const alt in json.choice.alternatives) { //is this right syntax?
 				if(json.choice.alternatives[alt]==null) break
@@ -105,6 +106,7 @@ function createCarousel(aNames, aDescrips, aIds, num) {
             cinners[i].append(h1)
             cinners[i].append(h4)
             cinners[i].append(divrow)
+			cinners[i].append(h6)
 
         }
     for(let i=num; i<5; i++) {
