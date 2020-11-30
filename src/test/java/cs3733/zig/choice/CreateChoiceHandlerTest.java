@@ -57,7 +57,7 @@ public class CreateChoiceHandlerTest {
 		CreateChoiceResponse response = handler.handleRequest(req, createContext("createChoice"));
 
 		assertTrue(response.idChoice != "");
-		assertEquals(200, response.httpCode);
+		assertEquals(200, response.statusCode);
 	}
 
 	void testFailInput(String incoming) throws IOException {
@@ -66,7 +66,7 @@ public class CreateChoiceHandlerTest {
 
 		CreateChoiceResponse response = handler.handleRequest(req, createContext("createChoice"));
 
-		Assert.assertEquals(400, response.httpCode);
+		Assert.assertEquals(400, response.statusCode);
 	}
 
 	@Test
