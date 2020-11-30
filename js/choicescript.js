@@ -12,31 +12,52 @@ window.onload = () => {
 			document.querySelector('#choicedescription').innerText = json.choice.description
 			const aNames = []
 			const aDescrips = []
+			const aIds = []
 			let number = 0
 			for(const alt in json.choice.alternatives) { //is this right syntax?
 				if(json.choice.alternatives[alt]==null) break
 				aNames.push(json.choice.alternatives[alt].name)
 				aDescrips.push(json.choice.alternatives[alt].description)
+				aIds.push(json.choice.alternatives[alt].id)
 				number += 1
 			}
-			createCarousel(aNames, aDescrips, number)
+			createCarousel(aNames, aDescrips, aIds, number)
 			document.querySelector('#code').innerText = json.choice.id
 		} else {
 			console.log("ERROR")
 		}		
 	})
 }
+
 function changeRating(self, strNum, otherInt) {
         const strs = ["up", "down"]
-        if(self.childNodes[0].src.includes('blue')) {
-            self.childNodes[0].src=`/img/${strs[strNum]}.png`
-        } else {
-            self.childNodes[0].src=`/img/blue${strs[strNum]}.png`
-        }
-        document.querySelectorAll(`.${strs[Math.abs(strNum-1)]}-rating`)[otherInt].src=`/img/${strs[Math.abs(strNum-1)]}.png`
-        //in here, also make sure that it deselects the other one!
+		const memberName = localStorage.getItem('memberName')
+		const rating = !self.childNodes[0].src.includes('blue')
+		const idAlternative = document.querySelectorAll('#idAlternative')[otherInt].innerText
+		fetch(url+"/addRating", {
+			method:'POST',
+			body:JSON.stringify({rating, memberName, idAlternative})
+		})
+		.then(response=>response.json())
+		.then(json=>{
+			console.log(json)
+			if(json.statusCode==200) {
+				//below only happens if successful
+		        if(self.childNodes[0].src.includes('blue')) {
+		            self.childNodes[0].src=`/img/${strs[strNum]}.png`
+		        } else {
+		            self.childNodes[0].src=`/img/blue${strs[strNum]}.png`
+		        }
+		        document.querySelectorAll(`.${strs[Math.abs(strNum-1)]}-rating`)[otherInt].src=`/img/${strs[Math.abs(strNum-1)]}.png`
+		        //in here, also make sure that it deselects the other one!
+			} else {
+				console.log("ERROR!")
+			}
+		})
+
+		
     }
-function createCarousel(aNames, aDescrips, num) {
+function createCarousel(aNames, aDescrips, aIds, num) {
     const cindicators = document.querySelectorAll('.cli')
     const cinners = document.querySelectorAll('.carousel-item')
     for(let i=0; i<num; i++) {
@@ -44,6 +65,9 @@ function createCarousel(aNames, aDescrips, num) {
             h1.innerText=aNames[i]
             const h4 = document.createElement('h4')
             h4.innerText=aDescrips[i]            
+			const h6 = document.createElement('h6')
+			h6.setAttribute('id', 'idAlternative')
+			h6.innerText=aIds[i]
             const approval = document.createElement('img')
             approval.setAttribute('src', '/img/up.png')
             approval.setAttribute('class', 'ratingImg up-rating')

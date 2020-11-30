@@ -46,6 +46,8 @@ window.onload = () => {
         .then( response => response.json())
         .then(json=> {
 			if(json.statusCode==200) {
+				localStorage.setItem('memberName', input[1].value)
+				localStorage.setItem('idChoice', inputs[0].value)
 				window.location.href='choice.html?idchoice='+json.idChoice
 			} else {
 				console.log("ERROR")
