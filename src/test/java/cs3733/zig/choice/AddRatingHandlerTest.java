@@ -56,7 +56,7 @@ public class AddRatingHandlerTest {
 		AddRatingRequest req = new Gson().fromJson(incoming, AddRatingRequest.class);
 		AddRatingResponse response = handler.handleRequest(req, createContext("addRating"));
 
-		assertEquals(200, response.httpCode);
+		assertEquals(200, response.statusCode);
 		assertEquals(approvers,response.approvers);
 		assertEquals(disapprovers,response.disapprovers);
 	}
@@ -66,7 +66,7 @@ public class AddRatingHandlerTest {
 		AddRatingRequest req = new Gson().fromJson(incoming, AddRatingRequest.class);
 		AddRatingResponse response = handler.handleRequest(req, createContext("addRating"));
 
-		Assert.assertEquals(400, response.httpCode);
+		Assert.assertEquals(400, response.statusCode);
 	}
 
 	@Test
