@@ -1,5 +1,6 @@
 const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha3'
 window.onload = () => {
+	localStorage.clear()
     document.querySelector('#createChoice').onclick = e=> {
         e.preventDefault()
         const inputs = document.querySelectorAll('.choiceField')
@@ -9,7 +10,7 @@ window.onload = () => {
         console.log({description:inputs[0].value,numMembers:parseInt(inputs[1].value), alternativeNames, alternativeDescriptions})
         fetch(url+'/choice', {
             method:'POST',
-            body:JSON.stringify({description:inputs[0].value,numMembers:parseInt(inputs[1].value), alternativeNames, alternativeDescriptions})
+            body:JSON.stringify({description:inputs[0].value,maxMembers:parseInt(inputs[1].value), alternativeNames, alternativeDescriptions})
         })
         .then( response => response.json())
         .then(json=> {
@@ -46,6 +47,7 @@ window.onload = () => {
         .then( response => response.json())
         .then(json=> {
 			if(json.statusCode==200) {
+				localStorage.clear()
 				localStorage.setItem('memberName', inputs[1].value)
 				localStorage.setItem('idChoice', inputs[0].value)
 				window.location.href='choice.html?idchoice='+json.idChoice
