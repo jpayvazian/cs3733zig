@@ -38,14 +38,12 @@ public class RequestChoicesHandlerTest {
 	public void testRequestChoice() throws IOException{
 		RequestChoicesHandler handler = new RequestChoicesHandler();
 
-        RequestChoiceResponse resp = handler.handleRequest(null, createContext("requestChoices"));
+        RequestChoiceResponse resp = handler.handleRequest("{}", createContext("requestChoices"));
+                
+        boolean hasChoices = false;
+        if (resp.choices.size() > 0) { hasChoices = true; }
         
-        boolean hasE = false;
-        for (Choice c : resp.choices) {
-        	System.out.println("found constant " + c);
-        	if (c.name.equals("e")) { hasE = true; }
-        }
-        Assert.assertTrue("e Needs to exist in the constants table (from tutorial) for this test case to work.", hasE);
+        Assert.assertTrue(hasChoices);
         Assert.assertEquals(200, resp.statusCode);
 	}
 
