@@ -12,9 +12,11 @@ window.onload = () => {
             console.log(json)
 			
 			const choices = json.choices
-			let output = ""
 			if(json.statusCode==200){
-				$( "#listOfChoicesReport" ).empty();
+				while(reportedChoices.firstChild){
+					reportedChoices.removeChild(reportedChoices.firstChild)
+				}
+				//$( "#listOfChoicesReport" ).empty();
 				for(let i = 0; i<choices.length; i++){
 					var date = new Date (choices[i].startDate);
 					
@@ -25,11 +27,11 @@ window.onload = () => {
 					const info = document.createElement('p')
 					info.innerText = "DATE OF CREATION: " + date + ", " + "COMPLETED: " + choices[i].completed
 					const horizontal = document.createElement('hr')
-					choiceElement.append(h3)
-					choiceElement.append(info)
-					choiceElement.append(horizontal)
+					choiceElement.appendChild(h3)
+					choiceElement.appendChild(info)
+					choiceElement.appendChild(horizontal)
 					
-					reportedChoices.append(choiceElement)
+					reportedChoices.appendChild(choiceElement)
 				}
 				
 				
