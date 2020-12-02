@@ -39,12 +39,11 @@ public class RequestChoicesHandlerTest {
 		RequestChoicesHandler handler = new RequestChoicesHandler();
 
         RequestChoiceResponse resp = handler.handleRequest("{}", createContext("requestChoices"));
-                
-        boolean hasChoices = false;
-        if (resp.choices.size() > 0) { hasChoices = true; }
         
-        Assert.assertTrue(hasChoices);
+        Assert.assertTrue(resp.choices.size() > 0);
+        Assert.assertEquals(resp.choices.get(0).getDescription(), "Where to eat");
         Assert.assertEquals(200, resp.statusCode);
 	}
+	
 
 }
