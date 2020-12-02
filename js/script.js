@@ -1,4 +1,4 @@
-const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha3'
+const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha4'
 window.onload = () => {
 	localStorage.clear()
     document.querySelector('#createChoice').onclick = e=> {
