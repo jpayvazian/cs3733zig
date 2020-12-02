@@ -19,13 +19,17 @@ window.onload = () => {
 				//$( "#listOfChoicesReport" ).empty();
 				for(let i = 0; i<choices.length; i++){
 					var date = new Date (choices[i].startDate);
+					var isCompleted = choices[i].completed;
+					if(choices[i].completed == null){
+						isCompleted = false;
+					}
 					
 					const choiceElement = document.createElement('div')
 					choiceElement.setAttribute('class','choiceElement')
 					const h3 = document.createElement('h3')
 					h3.innerText = choices[i].id + ": " + "\n"
 					const info = document.createElement('p')
-					info.innerText = "DATE OF CREATION: " + date + ", " + "COMPLETED: " + choices[i].completed
+					info.innerText = "DATE OF CREATION: " + date + ", " + "COMPLETED: " + isCompleted
 					const horizontal = document.createElement('hr')
 					choiceElement.appendChild(h3)
 					choiceElement.appendChild(info)
