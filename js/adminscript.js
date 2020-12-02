@@ -19,9 +19,11 @@ window.onload = () => {
 				//$( "#listOfChoicesReport" ).empty();
 				for(let i = 0; i<choices.length; i++){
 					var date = new Date (choices[i].startDate);
-					var isCompleted = choices[i].completed;
-					if(choices[i].completed == null){
+					var isCompleted;
+					if(choices[i].completionDate == null){
 						isCompleted = false;
+					}else{
+						isCompleted = true;
 					}
 					
 					const choiceElement = document.createElement('div')
