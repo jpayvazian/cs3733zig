@@ -39,7 +39,7 @@ public class GetSpecificChoiceHandlerTest {
 		GetSpecificChoiceHandler handler = new GetSpecificChoiceHandler();
 		GetSpecificChoiceRequest req = new Gson().fromJson(incoming, GetSpecificChoiceRequest.class);
 		GetSpecificChoiceResponse response = handler.handleRequest(req, createContext("choice/a28e2b11-5b81-4fd6-830b-b3d98334f0dd"));
-
+		System.out.println(response.statusCode);
 		assertTrue(response.choice != null);
 		assertEquals(200, response.statusCode);
 	}
@@ -52,7 +52,7 @@ public class GetSpecificChoiceHandlerTest {
 	}
 
 	@Test
-	public void testCreateChoice() {	
+	public void testGetSpecificChoice() {	
 		
 		GetSpecificChoiceRequest ccr = new GetSpecificChoiceRequest("a28e2b11-5b81-4fd6-830b-b3d98334f0dd");
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
