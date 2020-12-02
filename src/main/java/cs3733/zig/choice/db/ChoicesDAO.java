@@ -128,15 +128,14 @@ public class ChoicesDAO {
             	List<Member> teamMembers = new MembersDAO().getListOfMembers(idChoice);
             	Timestamp endDate = null;
             	boolean isCompleted = false;
-            	Alternative choesnAlternative = null;
-            	try {
-            		endDate = resultSet.getTimestamp("completionDate");
-            		isCompleted = true;
-            		choesnAlternative = new AlternativesDAO().getAlternative(resultSet.getString("chosenAlternative"));
-            	} catch (Exception e) {
-            		endDate = null;
-            	}
-                c = new Choice(resultSet.getString("idChoice"), resultSet.getString("description"), alternatives, choesnAlternative, resultSet.getInt("maxMembers"), isCompleted, teamMembers, resultSet.getTimestamp("startDate"), endDate);
+            	Alternative chosenAlternative = null;
+            	
+				endDate = resultSet.getTimestamp("completionDate");
+				if (endDate != null) {
+					isCompleted = true;
+					chosenAlternative = new AlternativesDAO().getAlternative(resultSet.getString("chosenAlternative"));
+				}
+				c = new Choice(resultSet.getString("idChoice"), resultSet.getString("description"), alternatives, chosenAlternative, resultSet.getInt("maxMembers"), isCompleted, teamMembers, resultSet.getTimestamp("startDate"), endDate);
             }
             return c;
 		} catch (Exception e) {
