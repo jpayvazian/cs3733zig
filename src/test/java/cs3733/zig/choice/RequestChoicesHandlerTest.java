@@ -16,6 +16,8 @@ import cs3733.zig.choice.http.RequestChoiceResponse;
 import cs3733.zig.choice.model.Choice;
 
 public class RequestChoicesHandlerTest {
+	//the first element in test schema has a description "Where to eat"
+	//the first element in test schema has a id 5dfc1ca7-7c26-44a2-8c12-77f8f1278ab6
 
 	@Test
 	public void testRequestChoicesResponse() {
@@ -42,6 +44,7 @@ public class RequestChoicesHandlerTest {
         
         Assert.assertTrue(resp.choices.size() > 0);
         Assert.assertEquals(resp.choices.get(0).getDescription(), "Where to eat");
+        Assert.assertEquals(resp.choices.get(0).getId(), "5dfc1ca7-7c26-44a2-8c12-77f8f1278ab6");
         Assert.assertEquals(200, resp.statusCode);
 	}
 	
