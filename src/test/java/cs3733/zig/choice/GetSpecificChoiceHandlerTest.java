@@ -38,7 +38,7 @@ public class GetSpecificChoiceHandlerTest {
 	void testInput(String incoming) throws IOException {
 		GetSpecificChoiceHandler handler = new GetSpecificChoiceHandler();
 		GetSpecificChoiceRequest req = new Gson().fromJson(incoming, GetSpecificChoiceRequest.class);
-		GetSpecificChoiceResponse response = handler.handleRequest(req, createContext("choice/a28e2b11-5b81-4fd6-830b-b3d98334f0dd"));
+		GetSpecificChoiceResponse response = handler.handleRequest(req, createContext("choice/5dfc1ca7-7c26-44a2-8c12-77f8f1278ab6"));
 		assertTrue(response.choice != null);
 		assertEquals(200, response.statusCode);
 	}
@@ -53,7 +53,7 @@ public class GetSpecificChoiceHandlerTest {
 	@Test
 	public void testGetSpecificChoice() {	
 		
-		GetSpecificChoiceRequest ccr = new GetSpecificChoiceRequest("a28e2b11-5b81-4fd6-830b-b3d98334f0dd");
+		GetSpecificChoiceRequest ccr = new GetSpecificChoiceRequest("5dfc1ca7-7c26-44a2-8c12-77f8f1278ab6");
         String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
         
         try {
