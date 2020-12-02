@@ -39,7 +39,6 @@ public class GetSpecificChoiceHandlerTest {
 		GetSpecificChoiceHandler handler = new GetSpecificChoiceHandler();
 		GetSpecificChoiceRequest req = new Gson().fromJson(incoming, GetSpecificChoiceRequest.class);
 		GetSpecificChoiceResponse response = handler.handleRequest(req, createContext("choice/a28e2b11-5b81-4fd6-830b-b3d98334f0dd"));
-		System.out.println(response.statusCode);
 		assertTrue(response.choice != null);
 		assertEquals(200, response.statusCode);
 	}
@@ -47,7 +46,7 @@ public class GetSpecificChoiceHandlerTest {
 	void testFailInput(String incoming) throws IOException {
 		GetSpecificChoiceHandler handler = new GetSpecificChoiceHandler();
 		GetSpecificChoiceRequest req = new Gson().fromJson(incoming, GetSpecificChoiceRequest.class);
-		GetSpecificChoiceResponse response = handler.handleRequest(req, createContext("choice/gs-5b81-4fd6-830b-b3d98334f0dd"));
+		GetSpecificChoiceResponse response = handler.handleRequest(req, createContext("choice/abcd"));
 		Assert.assertEquals(400, response.statusCode);
 	}
 
@@ -59,6 +58,17 @@ public class GetSpecificChoiceHandlerTest {
         
         try {
         	testInput(SAMPLE_INPUT_STRING);
+        } catch (IOException ioe) {
+        	Assert.fail("Invalid:" + ioe.getMessage());
+        }
+	}
+	@Test
+	public void testGetSpecificChoiceButFails() {
+		GetSpecificChoiceRequest ccr = new GetSpecificChoiceRequest("abcd");
+        String SAMPLE_INPUT_STRING = new Gson().toJson(ccr);  
+        
+        try {
+        	testFailInput(SAMPLE_INPUT_STRING);
         } catch (IOException ioe) {
         	Assert.fail("Invalid:" + ioe.getMessage());
         }
