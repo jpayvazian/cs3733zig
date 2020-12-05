@@ -7,7 +7,7 @@ import java.sql.Timestamp;
  * Class for Feedback
  *
  */
-public class Feedback {
+public class Feedback implements Comparable<Feedback>{
 	private Timestamp timestamp; //might change to a different type!
 	private String memberName;
 	private String contents;
@@ -51,6 +51,10 @@ public class Feedback {
 
 	public String getContents() {
 		return contents;
+	}
+	@Override
+	public int compareTo(Feedback fb) {
+		return this.getTimestamp().compareTo(fb.getTimestamp());
 	}
 	
 	
