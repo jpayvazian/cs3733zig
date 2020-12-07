@@ -170,10 +170,10 @@ public class ChoicesDAO {
 	
 	public boolean deleteChoices(double days) throws Exception {
 		//for more precision
-		double seconds = days*86400;
+		double seconds = -days*86400;
 		try {
 			//check if anything should be delete
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + "WHERE startDate <= dateadd(second, ?, now());");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + "WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
 			ps.setInt(1, (int) seconds);
 			ResultSet resultSet = ps.executeQuery();
 			
@@ -183,7 +183,7 @@ public class ChoicesDAO {
 			resultSet.close();
 			
 			//delete if there is something to delete
-			ps = conn.prepareStatement("DELETE * FROM " + tableName + "WHERE startDate <= dateadd(second, ?, now());");
+			ps = conn.prepareStatement("SELECT * FROM \" + tableName + \"WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
 			ps.setInt(1, (int) seconds);
 			ps.execute();
 			
