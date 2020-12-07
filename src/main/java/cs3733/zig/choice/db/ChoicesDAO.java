@@ -161,4 +161,22 @@ public class ChoicesDAO {
             throw new Exception("Failed in getting Choices: " + e.getMessage());
 		}
 	}
+	
+	public Timestamp completeChoice(String idChoice, String idAlternative) throws Exception{
+		try {
+            PreparedStatement ps = conn.prepareStatement("UPDATE " + tableName + " SET completionDate=?, chosenAlternative=? WHERE idChoice=?;");
+            Timestamp completionDate = new Timestamp(new java.util.Date().getTime());
+            ps.setTimestamp(1, completionDate);
+            ps.setString(2, idAlternative);
+            ps.setString(3, idChoice);
+            ps.executeUpdate();
+            ps.close();
+            
+            return completionDate;
+
+        } catch (Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Failed in switching rating: " + e.getMessage());
+        }
+	}
 }
