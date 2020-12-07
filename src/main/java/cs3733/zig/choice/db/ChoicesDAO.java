@@ -143,6 +143,11 @@ public class ChoicesDAO {
 			throw new Exception("Choice was not gotten properly");
 		}
 	}
+	/**
+	 * returns list of all choices in DAO
+	 * @return list of all choices in DAO
+	 * @throws Exception
+	 */
 	public List<Choice> getListOfChoices() throws Exception{
 		List<Choice> list = new ArrayList<>();
 		try {
@@ -160,6 +165,34 @@ public class ChoicesDAO {
             
 		} catch (Exception e) {
             throw new Exception("Failed in getting Choices: " + e.getMessage());
+		}
+	}
+	
+	public boolean deleteChoices(double days) throws Exception {
+		//for more precision
+		double seconds = days*86400;
+		try {
+			//check if anything should be delete
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + "WHERE startDate <= dateadd(second, ?, now());");
+			ps.setInt(1, (int) seconds);
+			ResultSet resultSet = ps.executeQuery();
+			
+			if (!resultSet.next()) {
+                return false;
+            }
+			resultSet.close();
+			
+			//delete if there is something to delete
+			ps = conn.prepareStatement("DELETE * FROM " + tableName + "WHERE startDate <= dateadd(second, ?, now());");
+			ps.setInt(1, (int) seconds);
+			ps.execute();
+			
+            ps.close();
+            return true;
+            
+            
+		} catch (Exception e) {
+            throw new Exception("Failed in deleting Choices: " + e.getMessage());
 		}
 	}
 }
