@@ -28,7 +28,7 @@ public class DeleteChoicesHandlerTest {
 	@Test
 	public void testDeleteChoicesResponse() {
 		DeleteChoicesResponse error = new DeleteChoicesResponse(400, "Failed to delete");
-		DeleteChoicesResponse dcr = new DeleteChoicesResponse(200);
+		DeleteChoicesResponse dcr = new DeleteChoicesResponse(200,2);
 		
 		String errorMsg = error.toString();
 		String successMsg = dcr.toString();
@@ -50,7 +50,7 @@ public class DeleteChoicesHandlerTest {
 		String SAMPLE_INPUT_STRING = new Gson().toJson(dcr);
 		
 		try {
-			testFailInput(SAMPLE_INPUT_STRING);
+			testInput(SAMPLE_INPUT_STRING);
 		} catch(IOException ioe) {
 			Assert.fail("Invalid:" + ioe.getMessage());
 		}
@@ -65,6 +65,7 @@ public class DeleteChoicesHandlerTest {
 		DeleteChoicesRequest req = new Gson().fromJson(incoming, DeleteChoicesRequest.class);
 		DeleteChoicesResponse response = handler.handleRequest(req, createContext("deleteChoices"));
 		
+		System.out.println(response.nmbrDeleted);
 		assertEquals(200, response.statusCode);
 	}
 	

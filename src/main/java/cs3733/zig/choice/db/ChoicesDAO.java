@@ -171,29 +171,31 @@ public class ChoicesDAO {
 		}
 	}
 	
-	public boolean deleteChoices(double days, LambdaLogger logger) throws Exception {
+	public int deleteChoices(double days) throws Exception {
 		//for more precision
 		double seconds = -days*86400;
+		int count = 0;
 		try {
 			//check if anything should be delete
-			logger.log("SELECT * FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
 			ps.setInt(1, (int) seconds);
 			ResultSet resultSet = ps.executeQuery();
 			
-			if (!resultSet.next()) {
-                return false;
+			if (resultSet.next()) {
+                count++;
             }
+			if (count == 0) {
+				return count;
+			}
 			resultSet.close();
 			
 			//delete if there is something to delete
-			logger.log("DELETE FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
 			ps = conn.prepareStatement("DELETE FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
 			ps.setInt(1, (int) seconds);
 			ps.execute();
 			
             ps.close();
-            return true;
+            return count;
             
             
 		} catch (Exception e) {

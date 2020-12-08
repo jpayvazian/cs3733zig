@@ -20,8 +20,9 @@ public class DeleteChoicesHandler implements RequestHandler<DeleteChoicesRequest
 		logger.log(input.toString());
 		DeleteChoicesResponse response = null;
 		
-		if (deleteChoices(input.getDays())) {
-			response = new DeleteChoicesResponse(200);
+		int numberDeleted = deleteChoices(input.getDays());
+		if (numberDeleted > -1) {
+			response = new DeleteChoicesResponse(200, numberDeleted);
 		}else {
 			response = new DeleteChoicesResponse(400, "Unable to delete choices");
 		}
@@ -34,7 +35,7 @@ public class DeleteChoicesHandler implements RequestHandler<DeleteChoicesRequest
 	 * @param days
 	 * @return
 	 */
-	private boolean deleteChoices(double days) {
+	private int deleteChoices(double days) {
 		return deleteChoicesFromRDS(days);
 	}
 
@@ -43,15 +44,14 @@ public class DeleteChoicesHandler implements RequestHandler<DeleteChoicesRequest
 	 * @param days
 	 * @return
 	 */
-	private boolean deleteChoicesFromRDS(double days) {
+	private int deleteChoicesFromRDS(double days) {
 		if (logger!=null) logger.log("in deleteChoicesFromRDS");
 		ChoicesDAO dao = new ChoicesDAO();
 		try {
-			//return true if it successfully deletes or false if nothing to delete
-			return dao.deleteChoices(days, logger);
+			return dao.deleteChoices(days);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return false;
+			return -1;
 		}
 	}
 
