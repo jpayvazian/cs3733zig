@@ -3,6 +3,7 @@ package cs3733.zig.choice;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,6 +11,8 @@ import org.junit.Test;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.google.gson.Gson;
 
+import cs3733.zig.choice.http.CreateChoiceRequest;
+import cs3733.zig.choice.http.CreateChoiceResponse;
 import cs3733.zig.choice.http.DeleteChoicesRequest;
 import cs3733.zig.choice.http.DeleteChoicesResponse;
 
@@ -42,18 +45,35 @@ public class DeleteChoicesHandlerTest {
 	
 	@Test
 	public void testDeleteChoices() {
-		DeleteChoicesRequest dcr = new DeleteChoicesRequest(14);
+		//30 days or older
+		DeleteChoicesRequest dcr = new DeleteChoicesRequest(30);
 		String SAMPLE_INPUT_STRING = new Gson().toJson(dcr);
 		
 		try {
-			testInput(SAMPLE_INPUT_STRING);
+			testFailInput(SAMPLE_INPUT_STRING);
 		} catch(IOException ioe) {
 			Assert.fail("Invalid:" + ioe.getMessage());
 		}
 	}
 
 	void testInput(String incoming) throws IOException{
+		/**
+		 * manually insert choice into workbench to make it pass:
+		 * insert into Choices values ("908da41c-1bd0-4021-9272-90b323502cf3", "What to Eat", 4, "2020-09-24 20:46:13",null,null)
+		 */
+		DeleteChoicesHandler handler = new DeleteChoicesHandler();
+		DeleteChoicesRequest req = new Gson().fromJson(incoming, DeleteChoicesRequest.class);
+		DeleteChoicesResponse response = handler.handleRequest(req, createContext("deleteChoices"));
 		
+		assertEquals(200, response.statusCode);
+	}
+	
+	void testFailInput(String incoming) throws IOException{
+		DeleteChoicesHandler handler = new DeleteChoicesHandler();
+		DeleteChoicesRequest req = new Gson().fromJson(incoming, DeleteChoicesRequest.class);
+		DeleteChoicesResponse response = handler.handleRequest(req, createContext("deleteChoices"));
+		
+		assertEquals(400, response.statusCode);
 	}
 
 }
