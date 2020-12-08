@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
+
+import com.amazonaws.services.lambda.runtime.LambdaLogger;
 
 import cs3733.zig.choice.model.Alternative;
 
@@ -168,12 +171,13 @@ public class ChoicesDAO {
 		}
 	}
 	
-	public boolean deleteChoices(double days) throws Exception {
+	public boolean deleteChoices(double days, LambdaLogger logger) throws Exception {
 		//for more precision
 		double seconds = -days*86400;
 		try {
 			//check if anything should be delete
-			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + "WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
+			logger.log("SELECT * FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
 			ps.setInt(1, (int) seconds);
 			ResultSet resultSet = ps.executeQuery();
 			
@@ -183,7 +187,8 @@ public class ChoicesDAO {
 			resultSet.close();
 			
 			//delete if there is something to delete
-			ps = conn.prepareStatement("SELECT * FROM \" + tableName + \"WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
+			logger.log("DELETE FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
+			ps = conn.prepareStatement("DELETE FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
 			ps.setInt(1, (int) seconds);
 			ps.execute();
 			

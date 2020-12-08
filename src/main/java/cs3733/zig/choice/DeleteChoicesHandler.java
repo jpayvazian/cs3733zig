@@ -48,7 +48,7 @@ public class DeleteChoicesHandler implements RequestHandler<DeleteChoicesRequest
 		ChoicesDAO dao = new ChoicesDAO();
 		try {
 			//return true if it successfully deletes or false if nothing to delete
-			return dao.deleteChoices(days);
+			return dao.deleteChoices(days, logger);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
