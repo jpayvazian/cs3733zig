@@ -7,6 +7,7 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
 import cs3733.zig.choice.db.AlternativesDAO;
+import cs3733.zig.choice.db.ChoicesDAO;
 import cs3733.zig.choice.db.RatingsDAO;
 import cs3733.zig.choice.http.AddRatingRequest;
 import cs3733.zig.choice.http.AddRatingResponse;
@@ -22,38 +23,40 @@ public class AddRatingHandler implements RequestHandler<AddRatingRequest, AddRat
 	LambdaLogger logger;
 	
     @Override
-    public AddRatingResponse handleRequest(AddRatingRequest input, Context context) {
-    	logger =  context.getLogger();
-      	logger.log("Loading Java Lambda handler of AddRatingHandler");
+	public AddRatingResponse handleRequest(AddRatingRequest input, Context context) {
+		logger = context.getLogger();
+		logger.log("Loading Java Lambda handler of AddRatingHandler");
 		logger.log(input.toString());
 		AddRatingResponse response;
-		
-		//check if member has rated this alternative, if no add a rating
-		//if yes, check if the rating is same or different value
-		//if same, remove the entry, if different update the entry
+
+		// check if member has rated this alternative, if no add a rating
+		// if yes, check if the rating is same or different value
+		// if same, remove the entry, if different update the entry
 		try {
-		if(!isRaterInDB(input.getMemberName(), input.getIdAlternative())){
-			addRatingToDB(input.getMemberName(), input.getIdAlternative(), input.getRating());
-		}
-		else {
-			if(getRatingInDB(input.getMemberName(), input.getIdAlternative()) == input.getRating()) {
-				unselectRatingInDB(input.getMemberName(), input.getIdAlternative()); 
+			if (isChoiceCompleted(input.getIdAlternative())) {
+				response = new AddRatingResponse("Choice has already been completed", 400);
+			} else {
+				if (!isRaterInDB(input.getMemberName(), input.getIdAlternative())) {
+					addRatingToDB(input.getMemberName(), input.getIdAlternative(), input.getRating());
+				} else {
+					if (getRatingInDB(input.getMemberName(), input.getIdAlternative()) == input.getRating()) {
+						unselectRatingInDB(input.getMemberName(), input.getIdAlternative());
+					} else {
+						switchRatingInDB(input.getMemberName(), input.getIdAlternative(), input.getRating());
+					}
+				}
+				ArrayList<String> approvers = getRatersInDB(input.getIdAlternative(), true);
+				ArrayList<String> disapprovers = getRatersInDB(input.getIdAlternative(), false);
+
+				response = new AddRatingResponse(approvers, disapprovers);
+
 			}
-			else {
-				switchRatingInDB(input.getMemberName(), input.getIdAlternative(), input.getRating());
-		}
-	}
-		ArrayList<String> approvers = getRatersInDB(input.getIdAlternative(), true);
-		ArrayList<String> disapprovers = getRatersInDB(input.getIdAlternative(), false);
-		
-		response = new AddRatingResponse(approvers, disapprovers);
-		
 		} catch (Exception e) {
 			response = new AddRatingResponse("Unable to add rating " + "(" + e.getMessage() + ")", 400);
 		}
-		
+
 		return response;
-    }
+	}
 
     private void switchRatingInDB(String raterName, String idAlternative, boolean rating) throws Exception {
     	if (logger != null) logger.log("in switchRatingInDB");
@@ -97,4 +100,12 @@ public class AddRatingHandler implements RequestHandler<AddRatingRequest, AddRat
     	RatingsDAO dao = new RatingsDAO();
     	return dao.getRating(raterName, idAlternative);
     }   
+    
+    private boolean isChoiceCompleted(String idAlternative) throws Exception{
+		if (logger != null) logger.log("in ratings isChoiceCompleted");
+		AlternativesDAO adao = new AlternativesDAO();
+		String idChoice = adao.getIdChoice(idAlternative);
+		ChoicesDAO cdao = new ChoicesDAO();
+		return cdao.isChoiceCompleted(idChoice);
+	}
 }

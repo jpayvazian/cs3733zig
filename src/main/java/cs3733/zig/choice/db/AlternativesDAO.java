@@ -112,6 +112,30 @@ public class AlternativesDAO {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	/**
+	 * Grabs the idChoice from an alternative
+	 * @param string
+	 * @return the idChoice
+	 */
+	public String getIdChoice(String idAlternative) throws Exception{
+		try {
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idAlternative = ?;");
+            ps.setString(1, idAlternative);
+            ResultSet resultSet = ps.executeQuery();
+            String idChoice = null;
+            
+            while (resultSet.next()) {
+            	idChoice = resultSet.getString("idChoice");
+            }
+            resultSet.close();
+            ps.close();
+            
+            return idChoice;
+		} catch (Exception e) {
+			return null;
+		}
 	} 
 
 }

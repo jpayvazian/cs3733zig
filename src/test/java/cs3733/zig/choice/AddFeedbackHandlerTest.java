@@ -57,6 +57,16 @@ public class AddFeedbackHandlerTest {
 		assertEquals(200, response.statusCode);
 	}
 	
+	void testFailInput(String incoming) throws IOException{
+		AddFeedbackHandler handler = new AddFeedbackHandler();
+		AddFeedbackRequest req = new Gson().fromJson(incoming, AddFeedbackRequest.class);
+		
+		AddFeedbackResponse response = handler.handleRequest(req, createContext("addFeedback"));
+		
+		assertEquals(response.error, "Choice has already been completed");
+		assertEquals(400, response.statusCode);
+	}
+	
 	@Test
 	public void testAddFeedback() {
 		AddFeedbackRequest afr = new AddFeedbackRequest("jack", "I can't cook","cb94dc03-08e8-4b96-bbd4-296de339253f");
@@ -65,6 +75,17 @@ public class AddFeedbackHandlerTest {
 		 
 		 try {
 	        	testInput(SAMPLE_INPUT_STRING, fb);
+	        } catch (IOException ioe) {
+	        	Assert.fail("Invalid:" + ioe.getMessage());
+	        }
+	}
+	
+	@Test
+	public void testChoiceAlreadyCompleted() {
+		AddFeedbackRequest afr = new AddFeedbackRequest("tester", "testFeedback","ae8e73a2-6897-4f98-aca5-9751087b0271");
+		 String SAMPLE_INPUT_STRING = new Gson().toJson(afr);  
+		 try {
+	        	testFailInput(SAMPLE_INPUT_STRING);
 	        } catch (IOException ioe) {
 	        	Assert.fail("Invalid:" + ioe.getMessage());
 	        }
