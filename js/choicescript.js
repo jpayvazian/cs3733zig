@@ -1,4 +1,4 @@
-const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha4' //modify when we change API
+const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/beta1' //modify when we change API
 window.onload = () => {
 	const idChoice = window.location.search.substring(window.location.search.indexOf("?idchoice=")+10, window.location.search.indexOf("?idchoice=")+46);
 	console.log(idChoice);
@@ -15,6 +15,7 @@ window.onload = () => {
 			const aIds = []
 			const aApproves = []
 			const aDisapproves = []
+			const aFeedbacks = []
 			//TODO: add support for feedback.
 			let number = 0
 			for(const alt in json.choice.alternatives) { //is this right syntax?
@@ -24,9 +25,10 @@ window.onload = () => {
 				aIds.push(json.choice.alternatives[alt].id)
 				aApproves.push(json.choice.alternatives[alt].approvers)
 				aDisapproves.push(json.choice.alternatives[alt].disapprovers)
+				aFeedbacks.push(json.choice.alternatives[alt].feedback)
 				number += 1
 			}
-			createCarousel(aNames, aDescrips, aIds, aApproves, aDisapproves, number)
+			createCarousel(aNames, aDescrips, aIds, aApproves, aDisapproves, number, aFeedbacks)
 			document.querySelector('#code').innerText = json.choice.id
 		} else {
 			console.log("ERROR")
@@ -82,7 +84,56 @@ function changeRating(self, strNum, otherInt) {
 
 		
     }
-function createCarousel(aNames, aDescrips, aIds, aApproves, aDisapproves, num) {
+
+function showFeedbackAddForm(altNum) {
+    	const theDiv = document.querySelectorAll('.feedbackForm')[altNum]
+    	if(theDiv.childNodes.length==0) {
+    		const field = document.createElement('textarea')
+    		field.setAttribute('id', `feedbackTextArea${altNum}`)
+	    	const submitButton = document.createElement('button')
+	    	submitButton.setAttribute('class', 'btn')
+	    	submitButton.setAttribute('class', 'btn-primary')
+	    	submitButton.innerText = 'Submit'
+	    	submitButton.setAttribute('onclick', `addFeedback(${altNum})`)
+	    	theDiv.append(field)
+	    	theDiv.append(submitButton)
+    	}
+    }
+
+    function addFeedback(altNum) {
+    	const feedback = document.querySelector(`#feedbackTextArea${altNum}`).value
+    	if(feedback=='') {
+    		alert('ERROR: empty text field!')
+    	} else {
+			const idAlternative = document.querySelectorAll('.idAlternative')[altNum].innerText
+			fetch(url+'/addFeedback', {
+				method:'POST',
+				body:JSON.stringify({memberName:localStorage.getItem('memberName'), contents:feedback, idAlternative})
+			})
+			.then(response=>response.json())
+			.then(json=>{
+				console.log(json);
+				if(json.statusCode==200) {
+					console.log(json.feedback)
+					const feedbackP = document.createElement('p')
+					feedbackP.innerText = json.feedback.contents
+					const feedbackMN = document.createElement('h4')
+	            	feedbackMN.innerText = 'By ' + json.feedback.memberName
+	            	feedbackMN.style.marginRight='40px'
+	            	feedbackMN.style.fontStyle = 'italic'
+					const hr = document.createElement('hr')
+					document.querySelector('#feedbackcollapse'+altNum).append(feedbackP)
+					document.querySelector('#feedbackcollapse'+altNum).append(feedbackMN)
+					document.querySelector('#feedbackcollapse'+altNum).append(hr)
+				} else {
+					console.log("ERROR ADDING FEEDBACK!")
+				}
+			})
+    	}
+}
+    	//TODO: make the fetch for addign zee feedback!
+
+function createCarousel(aNames, aDescrips, aIds, aApproves, aDisapproves, num, aFeedbacks) {
     const cindicators = document.querySelectorAll('.cli')
     const cinners = document.querySelectorAll('.carousel-item')
     for(let i=0; i<num; i++) {
@@ -180,7 +231,72 @@ function createCarousel(aNames, aDescrips, aIds, aApproves, aDisapproves, num) {
             cinners[i].append(h4)
             cinners[i].append(divrow)
 			cinners[i].append(h6)
+			//NEW CODE (FEEDBACK STUFF)
+			const hr = document.createElement('hr')
+            cinners[i].append(hr)
+			const addFeedbackBtn = document.createElement('button')
+            addFeedbackBtn.innerText = "Add Feedback"
+            addFeedbackBtn.setAttribute('onclick', `showFeedbackAddForm(${i})`)
+            addFeedbackBtn.style.cssFloat = 'left'
+            addFeedbackBtn.style.margin = '10px'
+            addFeedbackBtn.style.marginLeft = '180px'
+            addFeedbackBtn.setAttribute('class', 'btn')
+            addFeedbackBtn.setAttribute('class', 'btn-secondary')
+            cinners[i].append(addFeedbackBtn)
+            const chooseAltBtn = document.createElement('button')
+            chooseAltBtn.innerText = 'Choose This Alt'
+            chooseAltBtn.setAttribute('onclick', `pickAlternative(${i})`)
+            chooseAltBtn.style.cssFloat = 'right'
+            chooseAltBtn.style.margin = '10px'
+            chooseAltBtn.style.marginRight = '180px'
+            chooseAltBtn.setAttribute('class', 'btn')
+            chooseAltBtn.setAttribute('class', 'btn-secondary')
+            cinners[i].append(chooseAltBtn) 
+            const feedbackFormDiv = document.createElement('div')
+            feedbackFormDiv.setAttribute('class', `feedbackForm`)
+            cinners[i].append(feedbackFormDiv)
+            const hr2 = document.createElement('hr')
+            cinners[i].append(hr2)
 
+			if(aFeedbacks[i]!=null) {
+				
+			
+	            const feedLabel = document.createElement('h2')
+	            feedLabel.innerText='FEEDBACK:'
+	            cinners[i].append(feedLabel)
+	            const divOfFeedbacks = document.createElement('div')
+	            divOfFeedbacks.setAttribute('class', 'collapse')
+	            divOfFeedbacks.setAttribute('id', `feedbackcollapse${i}`)
+	            const showFeedbacks = document.createElement('button')
+	            showFeedbacks.setAttribute('class', 'btn')
+	            showFeedbacks.setAttribute('class', 'btn-primary')
+	            showFeedbacks.setAttribute('type', 'button')
+	            showFeedbacks.setAttribute('data-toggle', 'collapse')
+	            showFeedbacks.setAttribute('data-target', `#feedbackcollapse${i}`)
+	            showFeedbacks.innerText = 'Show Feedbacks'
+	            cinners[i].append(showFeedbacks)
+	            //TODO: add for loop to go through feedback for alternative, adding it.
+	            for(let x=0; x<aFeedbacks[i].length; x++) {
+	            	const desc = document.createElement('p')
+	            	desc.innerText = aFeedbacks[i][x].contents
+	            	const nme = document.createElement('h4')
+	            	nme.innerText = 'By ' + aFeedbacks[i][x].memberName
+	            	nme.style.marginRight='40px'
+	            	nme.style.fontStyle = 'italic'
+	            	const hrLine = document.createElement('hr')
+	            	divOfFeedbacks.append(desc)
+	            	divOfFeedbacks.append(nme)
+	            	divOfFeedbacks.append(hrLine)
+	            }
+	            cinners[i].append(divOfFeedbacks)
+			}
+
+
+            for(let k=0; k<5; k++) {
+            	const br = document.createElement('br')
+            	cinners[i].append(br)
+            }
+			
         }
     for(let i=num; i<5; i++) {
         cindicators[i].remove()
