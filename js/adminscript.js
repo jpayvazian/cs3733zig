@@ -1,4 +1,4 @@
-const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/alpha4'
+const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/beta1'
 window.onload = () => {
     document.querySelector('#reportchoices').onclick = e=> {
         e.preventDefault()
@@ -85,9 +85,8 @@ window.onload = () => {
         .then(json=> {
             console.log(json)
 			
-			const choices = json.choices
 			if(json.statusCode==200){
-				alert("Choices Deleted")
+				alert(json.nmbrDeleted + " Choices Deleted")
 			}
 			else alert("Error!")
         })
