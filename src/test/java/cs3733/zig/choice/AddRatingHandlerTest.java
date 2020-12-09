@@ -65,7 +65,8 @@ public class AddRatingHandlerTest {
 		AddRatingRequest req = new Gson().fromJson(incoming, AddRatingRequest.class);
 		AddRatingResponse response = handler.handleRequest(req, createContext("addRating"));
 
-		Assert.assertEquals(400, response.statusCode);
+		assertEquals(response.error, "Choice has already been completed");
+		assertEquals(400, response.statusCode);
 	}
 
 	@Test
@@ -98,5 +99,16 @@ public class AddRatingHandlerTest {
         } catch (IOException ioe) {
         	Assert.fail("Invalid:" + ioe.getMessage());
         }
+	}
+	
+	@Test
+	public void testChoiceAlreadyCompleted() {
+		AddRatingRequest afr = new AddRatingRequest(true, "tester","ae8e73a2-6897-4f98-aca5-9751087b0271");
+		 String SAMPLE_INPUT_STRING = new Gson().toJson(afr);  
+		 try {
+	        	testFailInput(SAMPLE_INPUT_STRING);
+	        } catch (IOException ioe) {
+	        	Assert.fail("Invalid:" + ioe.getMessage());
+	        }
 	}
 }

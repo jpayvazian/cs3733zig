@@ -4,6 +4,8 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 
+import cs3733.zig.choice.db.AlternativesDAO;
+import cs3733.zig.choice.db.ChoicesDAO;
 import cs3733.zig.choice.db.FeedbackDAO;
 import cs3733.zig.choice.http.AddFeedbackRequest;
 import cs3733.zig.choice.http.AddFeedbackResponse;
@@ -28,14 +30,26 @@ public class AddFeedbackHandler implements RequestHandler<AddFeedbackRequest, Ad
 		AddFeedbackResponse response;
 	
 		try {
-			Feedback feedback = addFeedback(input.memberName, input.contents, input.idAlternative);
-			response = new AddFeedbackResponse(feedback);
+			if (isChoiceCompleted(input.getIdAlternative())) {
+				response = new AddFeedbackResponse("Choice has already been completed", 400);
+			} else {
+				Feedback feedback = addFeedback(input.getMemberName(), input.getContents(), input.getIdAlternative());
+				response = new AddFeedbackResponse(feedback);
+			}
 			
 		} catch (Exception e) {
-			response = new AddFeedbackResponse("Unable to add Feedback: " + input.contents + "(" + e.getMessage() + ")", 400);
+			response = new AddFeedbackResponse("Unable to add Feedback: " + input.getContents() + "(" + e.getMessage() + ")", 400);
 		}
 		return response;
     }
+
+	private boolean isChoiceCompleted(String idAlternative) throws Exception{
+		if (logger != null) logger.log("in feedback isChoiceCompleted");
+		AlternativesDAO adao = new AlternativesDAO();
+		String idChoice = adao.getIdChoice(idAlternative);
+		ChoicesDAO cdao = new ChoicesDAO();
+		return cdao.isChoiceCompleted(idChoice);
+	}
 
 	private Feedback addFeedback(String memberName, String contents, String idAlternative) throws Exception {
 		if (logger != null) logger.log("in createFeedback");
