@@ -176,7 +176,7 @@ public class ChoicesDAO {
 
         } catch (Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in switching rating: " + e.getMessage());
+            throw new Exception("Failed to complete choice: " + e.getMessage());
         }
 	}
 	public boolean isChoiceCompleted(String idChoice) throws Exception{
@@ -198,7 +198,7 @@ public class ChoicesDAO {
 
         } catch (Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in switching rating: " + e.getMessage());
+            throw new Exception("Choice not found: " + e.getMessage());
         }
 	}
 }
