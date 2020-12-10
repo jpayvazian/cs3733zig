@@ -2,6 +2,7 @@ const url = 'https://zxnfjm0fbk.execute-api.us-east-2.amazonaws.com/beta1' //mod
 window.onload = () => {
 	const idChoice = window.location.search.substring(window.location.search.indexOf("?idchoice=")+10, window.location.search.indexOf("?idchoice=")+46);
 	console.log(idChoice);
+	document.querySelector('#mName').innerText += " " + localStorage.getItem('memberName')
 	fetch(url+"/choice/"+idChoice, {
 		method:'GET'
 	})
@@ -16,7 +17,6 @@ window.onload = () => {
 			const aApproves = []
 			const aDisapproves = []
 			const aFeedbacks = []
-			//TODO: add support for feedback.
 			let number = 0
 			for(const alt in json.choice.alternatives) { //is this right syntax?
 				if(json.choice.alternatives[alt]==null) break
@@ -132,7 +132,6 @@ function completeChoice(alt) {
     chosenAlt.innerText = alt
     document.querySelector('.jumbotron').append(end)
     document.querySelector('.jumbotron').append(chosenAlt)
-    const disableAs = document.querySelectorAll('a')
     Array.prototype.slice.call(document.querySelectorAll("a")).map(i=>i.onclick='')
     Array.prototype.slice.call(document.querySelectorAll(".onlyForActive")).map(i=>i.remove())
 }
@@ -158,9 +157,12 @@ function addFeedback(altNum) {
                 feedbackMN.innerText = 'By ' + json.feedback.memberName
                 feedbackMN.style.marginRight='40px'
                 feedbackMN.style.fontStyle = 'italic'
+				const timestamp = document.createElement('h6')
+				timestamp.innerText = new Date(json.feedback.timestamp)
                 const hr = document.createElement('hr')
                 document.querySelector('#feedbackcollapse'+altNum).append(feedbackP)
                 document.querySelector('#feedbackcollapse'+altNum).append(feedbackMN)
+				document.querySelector('#feedbackcollapse'+altNum).append(timestamp)
                 document.querySelector('#feedbackcollapse'+altNum).append(hr)
                 alert('Feedback added!')
                 const f = document.querySelectorAll('.feedbackForm')[altNum]
@@ -221,9 +223,12 @@ function createCarousel(aNames, aDescrips, aIds, aApproves, aDisapproves, num, a
 	            	nme.innerText = 'By ' + aFeedbacks[i][x].memberName
 	            	nme.style.marginRight='40px'
 	            	nme.style.fontStyle = 'italic'
+					const timestamp = document.createElement('h6')
+					timestamp.innerText = new Date(aFeedbacks[i][x].timestamp)
 	            	const hrLine = document.createElement('hr')
 	            	divOfFeedbacks.append(desc)
 	            	divOfFeedbacks.append(nme)
+					divOfFeedbacks.append(timestamp)
 	            	divOfFeedbacks.append(hrLine)
 	            }
 	            cinners[i].append(divOfFeedbacks)
