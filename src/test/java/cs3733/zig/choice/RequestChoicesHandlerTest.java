@@ -9,9 +9,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.google.gson.Gson;
 
-import cs3733.zig.choice.http.CreateChoiceRequest;
 import cs3733.zig.choice.http.RequestChoiceResponse;
 import cs3733.zig.choice.model.Choice;
 

@@ -176,7 +176,29 @@ public class ChoicesDAO {
 
         } catch (Exception e) {
         	e.printStackTrace();
-            throw new Exception("Failed in switching rating: " + e.getMessage());
+            throw new Exception("Failed to complete choice: " + e.getMessage());
+        }
+	}
+	public boolean isChoiceCompleted(String idChoice) throws Exception{
+		try {
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE idChoice=?;");
+ 
+            ps.setString(1, idChoice);
+			ResultSet resultSet = ps.executeQuery();
+			Timestamp endDate = null;
+			
+			while (resultSet.next()) {
+				endDate = resultSet.getTimestamp("completionDate");
+			}
+			resultSet.close();
+			ps.close();
+			
+			if(endDate != null) { return true; }
+			else { return false; }
+
+        } catch (Exception e) {
+        	e.printStackTrace();
+            throw new Exception("Choice not found: " + e.getMessage());
         }
 	}
 }
