@@ -19,6 +19,10 @@
 			.ratingImg {
 			    max-width:75px;
 			}
+			.idAlt {
+				font-size:6px;
+				/*can eventually make this hidden (as a meta-data property or something)*/
+			}
 		</style>
     </head>
     <body>
@@ -44,14 +48,245 @@
         <!-- Wrapper for carousel items -->
         <div class="carousel-inner">
             <div class="carousel-item active">
+
+            	<h1 class="altName">NAME</h1>
+            	<h4 class="altDes">DESCRIPTION</h4>
+            	<button class="btn btn-secondary onlyForActive pickMe" onclick="pickAlternative(0)">Pick me!</button>
+            	
+            	<br>
+            	<div class="row">
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 0, 0)">
+            				<img src="/img/up.png" alt="upvote" class="ratingImg up-rating">
+            			</a>
+            			<h5 class="upcount">COUNT</h5>
+        				<div>
+        					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#approvecollapse0">List of Approved Peeps</button>
+        					<div class="collapse" id="approvecollapse0">
+        						<ul class="approveul">
+        							<!--FILL IN VIA JS-->
+        						</ul>
+        					</div>
+        				</div>
+            		</div>
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 1, 0)"> <!--set onclick manually in function i think?-->
+            				<img src="/img/down.png" alt="downvote" class="ratingImg down-rating">
+            			</a>
+            			<h5 class="downcount">COUNT</h5>
+        				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#disapprovecollapse0">List of Disaproved Peeps</button>
+        				<div class="collapse" id="disapprovecollapse0">
+    						<ul class="disapproveul">
+    							<!--FILL IN VIA JS-->
+    						</ul>
+    					</div>
+            		</div>
+            	</div>
+            	<br>
+            	<hr>
+            	<br>
+            	<h3>Feedback:</h3>
+            	<button class="btn btn-secondary onlyForActive" onclick="showFeedbackAddForm(0)">Add Feedback</button><br><br>
+            	<div class="feedbackForm"></div>
+            	<button class="btn btn-primary" data-toggle="collapse" data-target="#feedbackcollapse0">Click to Show Feedback</button>
+            	<br>
+            	<div class="collapse feedbacks" id="feedbackcollapse0">
+
+            	</div>
+            	<br>
+            	<h6 class="idAlt"></h6>
             </div>
             <div class="carousel-item">
+            	<h1 class="altName">NAME</h1>
+            	<h4 class="altDes">DESCRIPTION</h4>
+            	<button class="btn btn-secondary onlyForActive pickMe" onclick="pickAlternative(1)">Pick me!</button>
+            	
+            	<br>
+            	<div class="row">
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 0, 1)">
+            				<img src="/img/up.png" alt="upvote" class="ratingImg up-rating">
+            			</a>
+            			<h5 class="upcount">COUNT</h5>
+        				<div>
+        					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#approvecollapse1">List of Approved Peeps</button>
+        					<div class="collapse" id="approvecollapse1">
+        						<ul class="approveul">
+        							<!--FILL IN VIA JS-->
+        						</ul>
+        					</div>
+        				</div>
+            		</div>
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 1, 1)"> <!--set onclick manually in function i think?-->
+            				<img src="/img/down.png" alt="downvote" class="ratingImg down-rating">
+            			</a>
+            			<h5 class="downcount">COUNT</h5>
+        				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#disapprovecollapse1">List of Disaproved Peeps</button>
+        				<div class="collapse" id="disapprovecollapse1">
+    						<ul class="disapproveul">
+    							<!--FILL IN VIA JS-->
+    						</ul>
+    					</div>
+            		</div>
+            	</div>
+            	<br>
+            	<hr>
+            	<br>
+            	<h3>Feedback:</h3>
+            	<button class="btn btn-secondary onlyForActive" onclick="showFeedbackAddForm(1)">Add Feedback</button><br><br>
+            	<div class="feedbackForm"></div>
+            	<button class="btn btn-primary" data-toggle="collapse" data-target="#feedbackcollapse1">Click to Show Feedback</button>
+            	<br>
+            	<div class="collapse feedbacks" id="feedbackcollapse1">
+
+            	</div>
+            	<br>
+            	<h6 class="idAlt"></h6>
             </div>
             <div class="carousel-item">
+            	<h1 class="altName">NAME</h1>
+            	<h4 class="altDes">DESCRIPTION</h4>
+            	<button class="btn btn-secondary onlyForActive pickMe" onclick="pickAlternative(2)">Pick me!</button>
+            	
+            	<br>
+            	<div class="row">
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 0, 2)">
+            				<img src="/img/up.png" alt="upvote" class="ratingImg up-rating">
+            			</a>
+            			<h5 class="upcount">COUNT</h5>
+        				<div>
+        					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#approvecollapse2">List of Approved Peeps</button>
+        					<div class="collapse" id="approvecollapse2">
+        						<ul class="approveul">
+        							<!--FILL IN VIA JS-->
+        						</ul>
+        					</div>
+        				</div>
+            		</div>
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 1, 2)"> <!--set onclick manually in function i think?-->
+            				<img src="/img/down.png" alt="downvote" class="ratingImg down-rating">
+            			</a>
+            			<h5 class="downcount">COUNT</h5>
+        				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#disapprovecollapse2">List of Disaproved Peeps</button>
+        				<div class="collapse" id="disapprovecollapse2">
+    						<ul class="disapproveul">
+    							<!--FILL IN VIA JS-->
+    						</ul>
+    					</div>
+            		</div>
+            	</div>
+            	<br>
+            	<hr>
+            	<br>
+            	<h3>Feedback:</h3>
+            	<button class="btn btn-secondary onlyForActive" onclick="showFeedbackAddForm(2)">Add Feedback</button><br><br>
+            	<div class="feedbackForm"></div>
+            	<button class="btn btn-primary" data-toggle="collapse" data-target="#feedbackcollapse2">Click to Show Feedback</button>
+            	<br>
+            	<div class="collapse feedbacks" id="feedbackcollapse2">
+
+            	</div>
+            	<br>
+            	<h6 class="idAlt"></h6>
             </div>
             <div class="carousel-item">
+            	<h1 class="altName">NAME</h1>
+            	<h4 class="altDes">DESCRIPTION</h4>
+            	<button class="btn btn-secondary onlyForActive pickMe" onclick="pickAlternative(3)">Pick me!</button>
+            	
+            	<br>
+            	<div class="row">
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 0, 3)">
+            				<img src="/img/up.png" alt="upvote" class="ratingImg up-rating">
+            			</a>
+            			<h5 class="upcount">COUNT</h5>
+        				<div>
+        					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#approvecollapse3">List of Approved Peeps</button>
+        					<div class="collapse" id="approvecollapse3">
+        						<ul class="approveul">
+        							<!--FILL IN VIA JS-->
+        						</ul>
+        					</div>
+        				</div>
+            		</div>
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 1, 3)"> <!--set onclick manually in function i think?-->
+            				<img src="/img/down.png" alt="downvote" class="ratingImg down-rating">
+            			</a>
+            			<h5 class="downcount">COUNT</h5>
+        				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#disapprovecollapse3">List of Disaproved Peeps</button>
+        				<div class="collapse" id="disapprovecollapse3">
+    						<ul class="disapproveul">
+    							<!--FILL IN VIA JS-->
+    						</ul>
+    					</div>
+            		</div>
+            	</div>
+            	<br>
+            	<hr>
+            	<br>
+            	<h3>Feedback:</h3>
+            	<button class="btn btn-secondary onlyForActive" onclick="showFeedbackAddForm(3)">Add Feedback</button><br><br>
+            	<div class="feedbackForm"></div>
+            	<button class="btn btn-primary" data-toggle="collapse" data-target="#feedbackcollapse3">Click to Show Feedback</button>
+            	<br>
+            	<div class="collapse feedbacks" id="feedbackcollapse3">
+
+            	</div>
+            	<br>
+            	<h6 class="idAlt"></h6>
             </div>
             <div class="carousel-item">
+            	<h1 class="altName">NAME</h1>
+            	<h4 class="altDes">DESCRIPTION</h4>
+            	<button class="btn btn-secondary onlyForActive pickMe" onclick="pickAlternative(4)">Pick me!</button>
+            	
+            	<br>
+            	<div class="row">
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 0, 4)">
+            				<img src="/img/up.png" alt="upvote" class="ratingImg up-rating">
+            			</a>
+            			<h5 class="upcount">COUNT</h5>
+        				<div>
+        					<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#approvecollapse4">List of Approved Peeps</button>
+        					<div class="collapse" id="approvecollapse4">
+        						<ul class="approveul">
+        							<!--FILL IN VIA JS-->
+        						</ul>
+        					</div>
+        				</div>
+            		</div>
+            		<div class="col-sm-6">
+            			<a onclick="changeRating(this, 1, 4)"> <!--set onclick manually in function i think?-->
+            				<img src="/img/down.png" alt="downvote" class="ratingImg down-rating">
+            			</a>
+            			<h5 class="downcount">COUNT</h5>
+        				<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#disapprovecollapse4">List of Disaproved Peeps</button>
+        				<div class="collapse" id="disapprovecollapse4">
+    						<ul class="disapproveul">
+    							<!--FILL IN VIA JS-->
+    						</ul>
+    					</div>
+            		</div>
+            	</div>
+            	<br>
+            	<hr>
+            	<br>
+            	<h3>Feedback:</h3>
+            	<button class="btn btn-secondary onlyForActive" onclick="showFeedbackAddForm(4)">Add Feedback</button><br><br>
+            	<div class="feedbackForm"></div>
+            	<button class="btn btn-primary" data-toggle="collapse" data-target="#feedbackcollapse4">Click to Show Feedback</button>
+            	<br>
+            	<div class="collapse feedbacks" id="feedbackcollapse4">
+
+            	</div>
+            	<br>
+            	<h6 class="idAlt"></h6>
             </div>
         </div>
         <!-- Carousel controls -->
