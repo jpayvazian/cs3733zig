@@ -176,14 +176,15 @@ public class ChoicesDAO {
 		double seconds = -days*86400;
 		int count = 0;
 		try {
-			//check if anything should be delete
+			//count how many there is to delete
 			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
 			ps.setInt(1, (int) seconds);
 			ResultSet resultSet = ps.executeQuery();
 			
-			if (resultSet.next()) {
+			while (resultSet.next()) {
                 count++;
             }
+			//just return if there is nothing to delete
 			if (count == 0) {
 				return count;
 			}

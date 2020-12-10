@@ -31,7 +31,7 @@ public class DeleteChoicesHandler implements RequestHandler<DeleteChoicesRequest
 	}
 	
 	/**
-	 * returns boolean to determine whether anything has been deleted/error thrown
+	 * returns int to determine how many have been deleted, -1 if error
 	 * @param days
 	 * @return
 	 */
