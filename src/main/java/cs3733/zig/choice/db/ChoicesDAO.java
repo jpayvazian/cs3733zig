@@ -201,4 +201,37 @@ public class ChoicesDAO {
             throw new Exception("Choice not found: " + e.getMessage());
         }
 	}
+	
+	public int deleteChoices(double days) throws Exception {
+		//for more precision
+		double seconds = -days*86400;
+		int count = 0;
+		try {
+			//count how many there is to delete
+			PreparedStatement ps = conn.prepareStatement("SELECT * FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
+			ps.setInt(1, (int) seconds);
+			ResultSet resultSet = ps.executeQuery();
+			
+			while (resultSet.next()) {
+                count++;
+            }
+			//just return if there is nothing to delete
+			if (count == 0) {
+				return count;
+			}
+			resultSet.close();
+			
+			//delete if there is something to delete
+			ps = conn.prepareStatement("DELETE FROM " + tableName + " WHERE startDate <= DATE_ADD(now(), INTERVAL ? SECOND);");
+			ps.setInt(1, (int) seconds);
+			ps.execute();
+			
+            ps.close();
+            return count;
+            
+            
+		} catch (Exception e) {
+            throw new Exception("Failed in deleting Choices: " + e.getMessage());
+		}
+	}
 }
